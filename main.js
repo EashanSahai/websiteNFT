@@ -51,7 +51,7 @@ function drawCircuitBoxesSequentially(elements) {
     let currentPathIndex = 0;
     let currentSegment = 0;
     let startTime = null;
-    const duration = 2000; // Duration per box drawing (2 seconds)
+    const duration = 500; // Duration per box drawing (500 milliseconds)
 
     // Function to animate the circuit drawing
     function animateCircuit(timestamp) {
@@ -125,10 +125,6 @@ function drawCircuitBoxesSequentially(elements) {
         if (segmentIndex < currentPath.length - 1) {
             context.moveTo(currentPath[segmentIndex].x, currentPath[segmentIndex].y);
             context.lineTo(currentX, currentY);
-        } else {
-            // If on the last segment, complete the path by returning to the start point
-            context.moveTo(currentPath[segmentIndex].x, currentPath[segmentIndex].y);
-            context.lineTo(currentPath[0].x, currentPath[0].y);
         }
     
         context.stroke();
