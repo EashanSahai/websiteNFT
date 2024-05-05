@@ -109,28 +109,30 @@ function drawCircuitBoxesSequentially(elements) {
             }
         }
     }
-
-    // Draw the path up to the current point
+    
     function drawPathUpTo(currentPath, segmentIndex, currentX, currentY) {
         context.strokeStyle = "white";
         context.lineWidth = 2;
         context.beginPath();
-
+    
         // Draw all completed segments
         for (let i = 0; i < segmentIndex; i++) {
             context.moveTo(currentPath[i].x, currentPath[i].y);
             context.lineTo(currentPath[i + 1].x, currentPath[i + 1].y);
         }
-
-        // Draw the current segment partially, up to the moving dot
+    
+        // Draw the current segment partially up to the moving circle
         if (segmentIndex < currentPath.length - 1) {
             context.moveTo(currentPath[segmentIndex].x, currentPath[segmentIndex].y);
             context.lineTo(currentX, currentY);
+        } else {
+            // If on the last segment, complete the path by returning to the start point
+            context.moveTo(currentPath[segmentIndex].x, currentPath[segmentIndex].y);
+            context.lineTo(currentPath[0].x, currentPath[0].y);
         }
-
+    
         context.stroke();
     }
-
     // Draw the "turning" dot with a black center
     function drawTurnDot(x, y) {
         // Outer circle (white)
