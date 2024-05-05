@@ -10,7 +10,7 @@ body {
 /* Section layout */
 #content-section {
     position: relative;
-    margin: 5px auto;
+    margin: 5px;
     width: 80%;
     text-align: center;
     opacity: 1;
