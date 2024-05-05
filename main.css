@@ -27,9 +27,9 @@ body {
 
 /* Add borders around other elements if desired */
 #header-text, #caption-text, #action-button {
-    border: 4px solid #ffffff; /* Visible white border */
+    border: 3px solid #ffffff; /* Visible white border */
     box-sizing: border-box;
-    margin: 0px auto;
+    margin: 20px auto;
     text-align: center;
     display: block;
     transition: opacity 0.5s ease-in;
@@ -39,6 +39,7 @@ body {
 #header-text {
     font-size: 3em;
     font-weight: bold;
+    width: 50%;
     margin: 5px 0;
     opacity: 0;
     transition: opacity 0.5s ease-in;
@@ -48,6 +49,7 @@ body {
 #caption-text {
     font-style: italic;
     font-size: 1.5em;
+    width: 50%
     margin-bottom: 20px;
     opacity: 0;
     transition: opacity 0.5s ease-in;
