@@ -2,6 +2,9 @@
 const canvas = document.getElementById("animationCanvas");
 const context = canvas.getContext("2d");
 
+const mainHeader = document.getElementById("main-header");
+const caption = document.getElementById("caption");
+
 let isBlinking = true;
 let blinkInterval;
 let pathPoints = [];
