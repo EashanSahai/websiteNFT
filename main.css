@@ -41,17 +41,15 @@ footer {
 }
 
 #nextButton {
-    display: none;
-    background: white;
-    color: black;
-    border: none;
     padding: 10px 20px;
-    cursor: pointer;
     font-size: 16px;
-    border-radius: 50%;
-    opacity: 0.8;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #nextButton:hover {
-    opacity: 1;
+    background-color: #45a049;
 }
