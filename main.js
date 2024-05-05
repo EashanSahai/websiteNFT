@@ -1,9 +1,5 @@
-// Function to draw a circuit around an element (section)
-function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder) {
-    const element = document.getElementById(elementId);
-    if (!element) return;
-
-    // Create a full-page canvas
+// Function to draw sequential circuit boxes around specified elements
+function drawCircuitBoxesSequentially(elements) {
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.top = 0;
@@ -14,43 +10,45 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
-    const margin = 20; // Margin around the section
+    const margin = 10; // Adjusted margin around each box
     const circleRadius = 12;
     const turnDotRadius = 10;
 
-    // Get the section's dimensions within the bounding rectangle
-    const sectionRect = element.getBoundingClientRect();
+    // Prepare path points for all specified elements sequentially
+    const orderedPaths = [];
+    for (const elementId of elements) {
+        const element = document.getElementById(elementId);
+        if (!element) continue;
 
-    // Define the path points with a margin around the section
-    const pathPoints = [
-        { x: sectionRect.left - margin, y: sectionRect.top - margin },
-        { x: sectionRect.right + margin, y: sectionRect.top - margin },
-        { x: sectionRect.right + margin, y: sectionRect.bottom + margin },
-        { x: sectionRect.left - margin, y: sectionRect.bottom + margin }
-    ];
+        const elementRect = element.getBoundingClientRect();
+        const pathPoints = [
+            { x: elementRect.left - margin, y: elementRect.top - margin },
+            { x: elementRect.right + margin, y: elementRect.top - margin },
+            { x: elementRect.right + margin, y: elementRect.bottom + margin },
+            { x: elementRect.left - margin, y: elementRect.bottom + margin }
+        ];
+        orderedPaths.push(pathPoints);
 
-    // Reorder path points based on the provided drawing order
-    const orderedPath = drawingOrder.map(i => pathPoints[i]);
+        // Initially hide the element
+        element.style.opacity = 0;
+    }
 
-    // Add start and end points if provided
-    if (startPoint) orderedPath.unshift(startPoint);
-    if (endPoint) orderedPath.push(endPoint);
-    else orderedPath.push(orderedPath[0]); // Close the path
-
+    let currentPathIndex = 0;
     let currentSegment = 0;
     let startTime = null;
-    const segmentCount = orderedPath.length - 1;
-    const duration = 5000; // Duration in milliseconds (5 seconds)
+    const duration = 2000; // Duration per box drawing (2 seconds)
 
     // Function to animate the circuit drawing
     function animateCircuit(timestamp) {
         if (!startTime) startTime = timestamp;
+        const currentPath = orderedPaths[currentPathIndex];
+        const segmentCount = currentPath.length;
         const segmentDuration = duration / segmentCount;
 
         // Ensure current segment index is valid
         if (currentSegment < segmentCount) {
-            const start = orderedPath[currentSegment];
-            const end = orderedPath[currentSegment + 1];
+            const start = currentPath[currentSegment];
+            const end = currentPath[(currentSegment + 1) % segmentCount];
 
             // Determine progress within the current segment
             const progress = (timestamp - startTime) / segmentDuration;
@@ -61,11 +59,11 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
 
             // Clear the canvas and redraw the path up to the current segment
             context.clearRect(0, 0, canvas.width, canvas.height);
-            drawPathUpTo(currentSegment, currentX, currentY);
+            drawPathUpTo(currentPath, currentSegment, currentX, currentY);
 
             // Draw all previously drawn turning dots up to the current segment
             for (let i = 0; i <= currentSegment; i++) {
-                drawTurnDot(orderedPath[i].x, orderedPath[i].y);
+                drawTurnDot(currentPath[i].x, currentPath[i].y);
             }
 
             // Draw the moving circle at the current position
@@ -83,30 +81,35 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
             // Continue animation
             requestAnimationFrame(animateCircuit);
         } else {
-            // Draw the final turning dot and moving circle
-            drawTurnDot(orderedPath[segmentCount].x, orderedPath[segmentCount].y);
-            drawMovingCircle(orderedPath[segmentCount].x, orderedPath[segmentCount].y);
+            // Reveal the current element after its box is drawn
+            revealElement(elements[currentPathIndex]);
 
-            // Make the section contents visible after drawing
-            revealContents(elementId);
+            // Move to the next path
+            currentPathIndex += 1;
+            currentSegment = 0;
+            startTime = null;
+
+            if (currentPathIndex < orderedPaths.length) {
+                requestAnimationFrame(animateCircuit);
+            }
         }
     }
 
     // Draw the path up to the current point
-    function drawPathUpTo(segmentIndex, currentX, currentY) {
+    function drawPathUpTo(currentPath, segmentIndex, currentX, currentY) {
         context.strokeStyle = "white";
         context.lineWidth = 2;
         context.beginPath();
 
         // Draw all completed segments
         for (let i = 0; i < segmentIndex; i++) {
-            context.moveTo(orderedPath[i].x, orderedPath[i].y);
-            context.lineTo(orderedPath[i + 1].x, orderedPath[i + 1].y);
+            context.moveTo(currentPath[i].x, currentPath[i].y);
+            context.lineTo(currentPath[i + 1].x, currentPath[i + 1].y);
         }
 
         // Draw the current segment partially, up to the moving dot
-        if (segmentIndex < segmentCount) {
-            context.moveTo(orderedPath[segmentIndex].x, orderedPath[segmentIndex].y);
+        if (segmentIndex < currentPath.length - 1) {
+            context.moveTo(currentPath[segmentIndex].x, currentPath[segmentIndex].y);
             context.lineTo(currentX, currentY);
         }
 
@@ -140,10 +143,10 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
     requestAnimationFrame(animateCircuit);
 }
 
-// Function to reveal the contents after drawing the circuit
-function revealContents(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        section.style.opacity = 1; // Fully visible
+// Function to reveal an element after its box is drawn
+function revealElement(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.style.opacity = 1; // Fully visible
     }
 }
