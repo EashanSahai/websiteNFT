@@ -92,18 +92,6 @@ function drawPathUpTo(segmentIndex, currentX, currentY) {
     context.stroke();
 }
 
-// Draw the final path without animation
-function drawFinalPath() {
-    context.strokeStyle = "white";
-    context.lineWidth = 2;
-    context.beginPath();
-    for (let i = 0; i < pathPoints.length - 1; i++) {
-        context.moveTo(pathPoints[i].x, pathPoints[i].y);
-        context.lineTo(pathPoints[i + 1].x, pathPoints[i + 1].y);
-    }
-    context.stroke();
-}
-
 // Draw the "turning" dot with a black center
 function drawTurnDot(x, y) {
     // Outer circle (white)
@@ -119,6 +107,17 @@ function drawTurnDot(x, y) {
     context.fill();
 }
 
+// Draw the final path without animation
+function drawFinalPath() {
+    context.strokeStyle = "white";
+    context.lineWidth = 2;
+    context.beginPath();
+    for (let i = 0; i < pathPoints.length - 1; i++) {
+        context.moveTo(pathPoints[i].x, pathPoints[i].y);
+        context.lineTo(pathPoints[i + 1].x, pathPoints[i + 1].y);
+    }
+    context.stroke();
+}
 // Draw the moving circle
 function drawMovingCircle(x, y) {
     context.fillStyle = "white";
