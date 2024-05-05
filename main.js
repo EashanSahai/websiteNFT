@@ -14,7 +14,7 @@ const pathPoints = [
 
 let currentSegment = 0;
 let startTime = null;
-const duration = 500; // Duration in milliseconds (5 seconds)
+const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 12;
 const turnDotRadius = 8;
 
