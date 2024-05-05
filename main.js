@@ -16,7 +16,7 @@ let currentSegment = 0;
 let startTime = null;
 const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 12;
-const turnDotRadius = 8;
+const turnDotRadius = 10;
 
 // Function to animate the circuit drawing
 function animateCircuit(timestamp) {
@@ -109,13 +109,13 @@ function drawTurnDot(x, y) {
     // Outer circle (white)
     context.fillStyle = "white";
     context.beginPath();
-    context.arc(x, y, turnDotRadius, 0, 2 * Math.PI);
+    context.arc(x, y, circleRadius, 0, 2 * Math.PI);
     context.fill();
 
     // Inner circle (black)
     context.fillStyle = "black";
     context.beginPath();
-    context.arc(x, y, circleRadius, 0, 2 * Math.PI);
+    context.arc(x, y, turnDotRadius, 0, 2 * Math.PI);
     context.fill();
 }
 
