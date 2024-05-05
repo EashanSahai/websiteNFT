@@ -14,9 +14,9 @@ const pathPoints = [
 
 let currentSegment = 0;
 let startTime = null;
-const duration = 5000; // Duration in milliseconds (5 seconds)
-const circleRadius = 8;
-const turnDotRadius = 12;
+const duration = 500; // Duration in milliseconds (5 seconds)
+const circleRadius = 12;
+const turnDotRadius = 8;
 
 // Function to animate the circuit drawing
 function animateCircuit(timestamp) {
@@ -27,7 +27,7 @@ function animateCircuit(timestamp) {
     // Determine progress within the current segment
     const progress = (timestamp - startTime) / segmentDuration;
 
-    if (progress >= 1) {
+    if (progress <= 1) {
         // Draw a turning dot at the current segment's start point
         drawTurnDot(pathPoints[currentSegment].x, pathPoints[currentSegment].y);
 
