@@ -73,7 +73,7 @@ function drawCircuitBoxesSequentially(elements) {
             const currentY = start.y + progress * (end.y - start.y);
 
             // Clear the canvas and redraw the path up to the current segment
-            //context.clearRect(0, 0, canvas.width, canvas.height);
+            context.clearRect(0, 0, canvas.width, canvas.height);
             drawPathUpTo(currentPath, currentSegment, currentX, currentY);
 
             // Draw all previously drawn turning dots up to the current segment
