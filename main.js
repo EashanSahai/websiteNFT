@@ -1,44 +1,45 @@
 // Function to draw sequential circuit boxes around specified elements
-function drawCircuitBoxesSequentially(elements, customDimensions) {
+function drawCircuitBoxesSequentially(elements) {
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.top = 0;
     canvas.style.left = 0;
     canvas.width = document.body.scrollWidth;
     canvas.height = document.body.scrollHeight;
-    canvas.style.zIndex = -1;
+    canvas.style.zIndex = 1; // Ensure the canvas is on top
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
-    const margin = 10; // Margin around each box
+    const margin = 10; // Adjust margin around each box
     const circleRadius = 12;
     const turnDotRadius = 10;
 
+    // Prepare path points for all specified elements sequentially
     const orderedPaths = [];
-    for (let index = 0; index < elements.length; index++) {
-        const elementId = elements[index];
+    for (const elementId of elements) {
         const element = document.getElementById(elementId);
         if (!element) continue;
 
-        // Calculate exact bounding box or use custom dimensions if provided
-        const elementRect = customDimensions && customDimensions[elementId] ? {
-            left: customDimensions[elementId].left || element.offsetLeft,
-            top: customDimensions[elementId].top || element.offsetTop,
-            width: customDimensions[elementId].width || element.offsetWidth,
-            height: customDimensions[elementId].height || element.offsetHeight
-        } : {
-            left: element.getBoundingClientRect().left,
-            top: element.getBoundingClientRect().top,
-            width: element.offsetWidth,
-            height: element.offsetHeight
-        };
+        // Calculate accurate dimensions based on content type
+        let elementRect = element.getBoundingClientRect();
+        const styles = getComputedStyle(element);
 
-        // Construct the path points considering the margin
+        // Adjust based on the computed styles and specific tag types
+        if (element.tagName === 'IMG') {
+            elementRect = {
+                left: elementRect.left,
+                top: elementRect.top,
+                right: elementRect.left + parseInt(styles.width),
+                bottom: elementRect.top + parseInt(styles.height)
+            };
+        }
+
+        // Calculate the bounding box with a specified margin
         const pathPoints = [
             { x: elementRect.left - margin, y: elementRect.top - margin },
-            { x: elementRect.left + elementRect.width + margin, y: elementRect.top - margin },
-            { x: elementRect.left + elementRect.width + margin, y: elementRect.top + elementRect.height + margin },
-            { x: elementRect.left - margin, y: elementRect.top + elementRect.height + margin }
+            { x: elementRect.right + margin, y: elementRect.top - margin },
+            { x: elementRect.right + margin, y: elementRect.bottom + margin },
+            { x: elementRect.left - margin, y: elementRect.bottom + margin }
         ];
 
         orderedPaths.push(pathPoints);
@@ -71,7 +72,8 @@ function drawCircuitBoxesSequentially(elements, customDimensions) {
             const currentX = start.x + progress * (end.x - start.x);
             const currentY = start.y + progress * (end.y - start.y);
 
-            // Clear only the path area to ensure boxes remain visible
+            // Clear the canvas and redraw the path up to the current segment
+            context.clearRect(0, 0, canvas.width, canvas.height);
             drawPathUpTo(currentPath, currentSegment, currentX, currentY);
 
             // Draw all previously drawn turning dots up to the current segment
