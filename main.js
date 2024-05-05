@@ -13,29 +13,28 @@ const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 12;
 const turnDotRadius = 10;
 
+// Adjust the canvas size based on its parent
 function resizeCanvas() {
     canvas.width = canvas.parentElement.offsetWidth;
     canvas.height = canvas.parentElement.offsetHeight;
     calculatePathPoints();
 }
 
+// Recalculate path points dynamically based on header location
 function calculatePathPoints() {
     const headerRect = mainHeader.getBoundingClientRect();
-    const captionRect = caption.getBoundingClientRect();
     const canvasRect = canvas.getBoundingClientRect();
 
-    // Convert DOM coordinates to canvas coordinates
-    const offsetX = canvasRect.left;
-    const offsetY = canvasRect.top;
-
+    // Map the header coordinates directly to canvas coordinates
     pathPoints = [
-        { x: headerRect.left - offsetX - headerMargin, y: headerRect.top - offsetY - headerMargin },
-        { x: headerRect.right - offsetX + headerMargin, y: headerRect.top - offsetY - headerMargin },
-        { x: headerRect.right - offsetX + headerMargin, y: headerRect.bottom - offsetY + headerMargin },
-        { x: headerRect.left - offsetX - headerMargin, y: headerRect.bottom - offsetY + headerMargin }
+        { x: headerRect.left - canvasRect.left - headerMargin, y: headerRect.top - canvasRect.top - headerMargin },
+        { x: headerRect.right - canvasRect.left + headerMargin, y: headerRect.top - canvasRect.top - headerMargin },
+        { x: headerRect.right - canvasRect.left + headerMargin, y: headerRect.bottom - canvasRect.top + headerMargin },
+        { x: headerRect.left - canvasRect.left - headerMargin, y: headerRect.bottom - canvasRect.top + headerMargin },
+        { x: headerRect.left - canvasRect.left - headerMargin, y: headerRect.top - canvasRect.top - headerMargin }
     ];
 
-    // Reset animation
+    // Reset the animation
     currentSegment = 0;
     startTime = null;
     requestAnimationFrame(animateCircuit);
@@ -97,7 +96,7 @@ function drawPathUpTo(segmentIndex, currentX, currentY) {
 
     // Draw all completed segments
     for (let i = 0; i < segmentIndex; i++) {
-        context.moveTo(pathPoints[i].x, pathPoints[i + 1].y);
+        context.moveTo(pathPoints[i].x, pathPoints[i].y);
         context.lineTo(pathPoints[i + 1].x, pathPoints[i + 1].y);
     }
 
