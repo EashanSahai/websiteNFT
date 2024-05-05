@@ -28,7 +28,7 @@ function animateCircuit(timestamp) {
     const progress = (timestamp - startTime) / segmentDuration;
 
     if (progress >= 1) {
-        // Draw a turning dot at the current segment's start point
+        // Draw a turning dot at the current segment's start point immediately
         drawTurnDot(pathPoints[currentSegment].x, pathPoints[currentSegment].y);
 
         // Move to the next segment
@@ -36,8 +36,7 @@ function animateCircuit(timestamp) {
         startTime = timestamp;
 
         if (currentSegment >= segmentCount) {
-            // End animation if all segments are drawn
-            drawFinalPath();
+            // Draw final elements once all segments are done
             drawMovingCircle(pathPoints[segmentCount].x, pathPoints[segmentCount].y);
             fadeInHeaders();
             return;
@@ -61,11 +60,6 @@ function animateCircuit(timestamp) {
 
     // Draw the moving circle at the current position
     drawMovingCircle(currentX, currentY);
-
-    // Draw the last turning dot if at the end
-    if (currentSegment === segmentCount) {
-        drawTurnDot(pathPoints[segmentCount].x, pathPoints[segmentCount].y);
-    }
 
     // Continue animation
     requestAnimationFrame(animateCircuit);
@@ -107,17 +101,6 @@ function drawTurnDot(x, y) {
     context.fill();
 }
 
-// Draw the final path without animation
-function drawFinalPath() {
-    context.strokeStyle = "white";
-    context.lineWidth = 2;
-    context.beginPath();
-    for (let i = 0; i < pathPoints.length - 1; i++) {
-        context.moveTo(pathPoints[i].x, pathPoints[i].y);
-        context.lineTo(pathPoints[i + 1].x, pathPoints[i + 1].y);
-    }
-    context.stroke();
-}
 // Draw the moving circle
 function drawMovingCircle(x, y) {
     context.fillStyle = "white";
