@@ -6,78 +6,61 @@ document.addEventListener('DOMContentLoaded', () => {
     const h2 = content.querySelector('h2');
     const nextButton = document.getElementById('nextButton');
     const blinkDuration = 3000; // Blinking effect for 3 seconds
+// Initialization
+const canvas = document.getElementById("animationCanvas");
+const context = canvas.getContext("2d");
 
-    // Setup the canvas
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
+let isBlinking = true;
+let blinkInterval;
+let pathPoints = [];
+let pathDrawn = false;
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    let blinkState = false;
-    let blinkStart = Date.now();
-
-    // Blinking Dot Animation
-    function drawBlinkingDot() {
-        const elapsed = Date.now() - blinkStart;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (elapsed < blinkDuration) {
-            blinkState = !blinkState;
-            ctx.fillStyle = blinkState ? 'white' : 'black';
-            ctx.beginPath();
-            ctx.arc(canvas.width / 4, canvas.height / 2, 10, 0, Math.PI * 2);
-            ctx.fill();
-        } else {
-            drawCircuitPath();
+// Function to blink the initial dot
+function blinkDot(x, y) {
+    let visible = true;
+    blinkInterval = setInterval(() => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        if (visible) {
+            drawDot(x, y);
         }
+        visible = !visible;
+    }, 500);
+}
 
-        if (elapsed < blinkDuration) {
-            requestAnimationFrame(drawBlinkingDot);
-        }
-    }
+// Function to draw a static dot
+function drawDot(x, y) {
+    context.fillStyle = "white";
+    context.beginPath();
+    context.arc(x, y, 8, 0, 2 * Math.PI);
+    context.fill();
+}
 
-    function drawCircuitPath() {
-        // Example circuit path (customize this path as needed)
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
+// Function to draw circuit lines
+function drawCircuit() {
+    context.strokeStyle = "white";
+    context.lineWidth = 2;
+    context.beginPath();
+    // Example Path (customize based on your design)
+    context.moveTo(100, 300); // Starting point
+    context.lineTo(200, 300); // Horizontal to the right
+    context.lineTo(200, 200); // Upwards
+    context.lineTo(500, 200); // Far to the right
 
-        // Starting Point
-        ctx.beginPath();
-        ctx.moveTo(canvas.width / 4, canvas.height / 2);
-        ctx.lineTo(canvas.width / 2, canvas.height / 2);
-        ctx.lineTo(canvas.width / 2, canvas.height / 4);
-        ctx.lineTo((3 * canvas.width) / 4, canvas.height / 4);
-        ctx.lineTo((3 * canvas.width) / 4, canvas.height / 2);
+    context.stroke();
+}
 
-        // Circles at junctions
-        const junctions = [
-            { x: canvas.width / 2, y: canvas.height / 2 },
-            { x: canvas.width / 2, y: canvas.height / 4 },
-            { x: (3 * canvas.width) / 4, y: canvas.height / 4 }
-        ];
-        junctions.forEach(j => {
-            ctx.moveTo(j.x + 5, j.y);
-            ctx.arc(j.x, j.y, 5, 0, Math.PI * 2);
-        });
+// Animation initiation
+function startAnimation() {
+    drawDot(100, 300); // Example starting position
+    blinkDot(100, 300);
 
-        // Finish the path
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc((3 * canvas.width) / 4, canvas.height / 2, 10, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+    // Stop blinking and draw the circuit after 3 seconds
+    setTimeout(() => {
+        clearInterval(blinkInterval);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawCircuit();
+    }, 3000);
+}
 
-        // Fade-in and reveal content
-        content.style.display = 'block';
-        setTimeout(() => {
-            h1.style.opacity = '1';
-            h2.style.opacity = '1';
-            nextButton.style.display = 'inline-block';
-        }, 1000);
-    }
-
-    drawBlinkingDot();
-});
+// Start the animation
+startAnimation();
