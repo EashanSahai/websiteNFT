@@ -17,7 +17,6 @@ let startTime = null;
 const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 8;
 const turnDotRadius = 12;
-const drawnTurnDots = new Set(); // To track which turn dots have been drawn
 
 // Function to animate the circuit drawing
 function animateCircuit(timestamp) {
@@ -29,8 +28,10 @@ function animateCircuit(timestamp) {
     const progress = (timestamp - startTime) / segmentDuration;
 
     if (progress >= 1) {
+        // When moving to the next segment, draw a turning dot immediately
+        drawTurnDot(pathPoints[currentSegment].x, pathPoints[currentSegment].y);
+
         // Move to the next segment
-        drawnTurnDots.add(currentSegment); // Mark the current segment's start as a turning point
         currentSegment += 1;
         startTime = timestamp;
 
@@ -53,11 +54,6 @@ function animateCircuit(timestamp) {
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawPathUpTo(currentSegment, currentX, currentY);
 
-    // Draw turning dots that were reached previously
-    for (const segmentIndex of drawnTurnDots) {
-        drawTurnDot(pathPoints[segmentIndex].x, pathPoints[segmentIndex].y);
-    }
-
     // Draw the moving circle at the current position
     drawMovingCircle(currentX, currentY);
 
@@ -72,14 +68,14 @@ function drawPathUpTo(segmentIndex, currentX, currentY) {
     context.beginPath();
 
     // Draw all completed segments
-    for (let i = 0; i <= segmentIndex; i++) {
+    for (let i = 0; i < segmentIndex; i++) {
         context.moveTo(pathPoints[i].x, pathPoints[i].y);
         context.lineTo(pathPoints[i + 1].x, pathPoints[i + 1].y);
     }
 
     // Draw the current segment partially, up to the moving dot
     if (segmentIndex < pathPoints.length - 1) {
-        context.moveTo(pathPoints[segmentIndex].x, pathPoints[segmentIndex].y);
+        context.moveTo(pathPoints[segmentIndex].x, pathPoints[segmentIndex + 1].y);
         context.lineTo(currentX, currentY);
     }
 
