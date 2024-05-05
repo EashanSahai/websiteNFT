@@ -10,12 +10,31 @@ body {
 /* Section layout */
 #content-section {
     position: relative;
-    margin: 5px;
+    margin: 50px auto;
     width: 80%;
     text-align: center;
     opacity: 1;
 }
+/* Add a visible border around images */
+#example-image {
+    width: 300px;  /* Explicit width */
+    height: 200px; /* Explicit height */
+    margin: 20px auto;
+    display: block;
+    border: 3px solid #ffffff; /* Visible white border */
+    box-sizing: border-box;
+}
 
+/* Add borders around other elements if desired */
+#header-text, #caption-text, #action-button {
+    border: 2px solid #ffffff; /* Visible white border */
+    box-sizing: border-box;
+    margin: 20px auto;
+    text-align: center;
+    display: block;
+    transition: opacity 0.5s ease-in;
+    opacity: 0; /* Initially hidden */
+}
 /* Header styles */
 #header-text {
     font-size: 3em;
