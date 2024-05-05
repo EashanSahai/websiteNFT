@@ -6,11 +6,11 @@ function drawCircuitBoxesSequentially(elements) {
     canvas.style.left = 0;
     canvas.width = document.body.scrollWidth;
     canvas.height = document.body.scrollHeight;
-    canvas.style.zIndex = -1;
+    canvas.style.zIndex = 1; // Ensure the canvas is on top
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
-    const margin = 10; // Adjusted margin around each box
+    const margin = 10; // Adjust margin around each box
     const circleRadius = 12;
     const turnDotRadius = 10;
 
@@ -20,13 +20,28 @@ function drawCircuitBoxesSequentially(elements) {
         const element = document.getElementById(elementId);
         if (!element) continue;
 
-        const elementRect = element.getBoundingClientRect();
+        // Calculate accurate dimensions based on content type
+        let elementRect = element.getBoundingClientRect();
+        const styles = getComputedStyle(element);
+
+        // Adjust based on the computed styles and specific tag types
+        if (element.tagName === 'IMG') {
+            elementRect = {
+                left: elementRect.left,
+                top: elementRect.top,
+                right: elementRect.left + parseInt(styles.width),
+                bottom: elementRect.top + parseInt(styles.height)
+            };
+        }
+
+        // Calculate the bounding box with a specified margin
         const pathPoints = [
             { x: elementRect.left - margin, y: elementRect.top - margin },
             { x: elementRect.right + margin, y: elementRect.top - margin },
             { x: elementRect.right + margin, y: elementRect.bottom + margin },
             { x: elementRect.left - margin, y: elementRect.bottom + margin }
         ];
+
         orderedPaths.push(pathPoints);
 
         // Initially hide the element
