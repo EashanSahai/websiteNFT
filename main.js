@@ -21,7 +21,7 @@ function drawCircuitBoxesSequentially(elements) {
         if (!element) continue;
 
         // Calculate accurate dimensions based on content type
-        let elementRect = element.style.boxSizing;
+        let elementRect = element.getBoundingClientRect();
         const styles = getComputedStyle(element);
 
         // Adjust based on the computed styles and specific tag types
