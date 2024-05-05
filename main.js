@@ -17,11 +17,11 @@ function drawCircuitBoxesSequentially(elements) {
     // Prepare path points for all specified elements sequentially
     const orderedPaths = [];
     for (const elementId of elements) {
-        const element = document.getElementById(elementId).innerHTML;
+        const element = document.getElementById(elementId);
         if (!element) continue;
 
         // Calculate accurate dimensions based on content type
-        let elementRect = element.getBoundingClientRect();
+        let elementRect = element.style.boxSizing;
         const styles = getComputedStyle(element);
 
         // Adjust based on the computed styles and specific tag types
