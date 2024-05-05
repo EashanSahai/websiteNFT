@@ -27,8 +27,8 @@ function animateCircuit(timestamp) {
     // Determine progress within the current segment
     const progress = (timestamp - startTime) / segmentDuration;
 
+    // Draw the turning dot at the beginning of each segment
     if (progress >= 1) {
-        // Draw a turning dot at the current segment's start point immediately
         drawTurnDot(pathPoints[currentSegment].x, pathPoints[currentSegment].y);
 
         // Move to the next segment
@@ -36,14 +36,15 @@ function animateCircuit(timestamp) {
         startTime = timestamp;
 
         if (currentSegment >= segmentCount) {
-            // Draw final elements once all segments are done
+            // Draw the last point and reveal headers once the entire path is drawn
+            drawTurnDot(pathPoints[segmentCount].x, pathPoints[segmentCount].y);
             drawMovingCircle(pathPoints[segmentCount].x, pathPoints[segmentCount].y);
             fadeInHeaders();
             return;
         }
     }
 
-    // Calculate current position along the path using linear interpolation
+    // Calculate the current position along the path using linear interpolation
     const start = pathPoints[currentSegment];
     const end = pathPoints[currentSegment + 1];
     const currentX = start.x + progress * (end.x - start.x);
@@ -53,8 +54,8 @@ function animateCircuit(timestamp) {
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawPathUpTo(currentSegment, currentX, currentY);
 
-    // Draw turning dots at completed segments
-    for (let i = 0; i < currentSegment; i++) {
+    // Draw all previously drawn turning dots up to the current segment
+    for (let i = 0; i <= currentSegment; i++) {
         drawTurnDot(pathPoints[i].x, pathPoints[i].y);
     }
 
