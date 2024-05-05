@@ -17,6 +17,7 @@ let startTime = null;
 const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 12;
 const turnDotRadius = 10;
+let animationRunning = true;
 
 // Function to animate the circuit drawing
 function animateCircuit(timestamp) {
@@ -36,10 +37,12 @@ function animateCircuit(timestamp) {
         startTime = timestamp;
 
         if (currentSegment >= segmentCount) {
-            // Draw the last point and reveal headers once the entire path is drawn
+            // Draw the final state and stop further animation
+            drawFinalPath();
             drawTurnDot(pathPoints[segmentCount].x, pathPoints[segmentCount].y);
             drawMovingCircle(pathPoints[segmentCount].x, pathPoints[segmentCount].y);
             fadeInHeaders();
+            animationRunning = false;
             return;
         }
     }
@@ -62,8 +65,10 @@ function animateCircuit(timestamp) {
     // Draw the moving circle at the current position
     drawMovingCircle(currentX, currentY);
 
-    // Continue animation
-    requestAnimationFrame(animateCircuit);
+    // Continue animation only if not completed
+    if (animationRunning) {
+        requestAnimationFrame(animateCircuit);
+    }
 }
 
 // Draw the path up to the current point
@@ -84,6 +89,18 @@ function drawPathUpTo(segmentIndex, currentX, currentY) {
         context.lineTo(currentX, currentY);
     }
 
+    context.stroke();
+}
+
+// Draw the final path without animation
+function drawFinalPath() {
+    context.strokeStyle = "white";
+    context.lineWidth = 2;
+    context.beginPath();
+    for (let i = 0; i < pathPoints.length - 1; i++) {
+        context.moveTo(pathPoints[i].x, pathPoints[i].y);
+        context.lineTo(pathPoints[i + 1].x, pathPoints[i + 1].y);
+    }
     context.stroke();
 }
 
