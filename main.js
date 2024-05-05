@@ -27,7 +27,7 @@ function animateCircuit(timestamp) {
     // Determine progress within the current segment
     const progress = (timestamp - startTime) / segmentDuration;
 
-    if (progress <= 1) {
+    if (progress >= 1) {
         // Draw a turning dot at the current segment's start point
         drawTurnDot(pathPoints[currentSegment].x, pathPoints[currentSegment].y);
 
