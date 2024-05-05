@@ -125,6 +125,10 @@ function drawCircuitBoxesSequentially(elements) {
         if (segmentIndex < currentPath.length - 1) {
             context.moveTo(currentPath[segmentIndex].x, currentPath[segmentIndex].y);
             context.lineTo(currentX, currentY);
+        }  else {
+            // If on the last segment, complete the path by returning to the start point
+            context.moveTo(currentPath[segmentIndex].x, currentPath[segmentIndex].y);
+            context.lineTo(currentX, currentY);
         }
     
         context.stroke();
