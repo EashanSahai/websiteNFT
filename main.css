@@ -27,9 +27,9 @@ body {
 
 /* Add borders around other elements if desired */
 #header-text, #caption-text, #action-button {
-    border: 2px solid #ffffff; /* Visible white border */
+    border: 4px solid #ffffff; /* Visible white border */
     box-sizing: border-box;
-    margin: 20px auto;
+    margin: 0px auto;
     text-align: center;
     display: block;
     transition: opacity 0.5s ease-in;
