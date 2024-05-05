@@ -33,8 +33,8 @@ h1, h2 {
 h2 {
     font-style: italic;
 }
-#main-header {
-    margin-top: 20px;
+#main-header, #caption {
+    display: none;
 }
 footer {
     margin-top: 50px;
