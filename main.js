@@ -16,8 +16,9 @@ let currentSegment = 0;
 let startTime = null;
 const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 8;
+const turnDotRadius = 12;
 
-// Function to draw the circuit animation
+// Function to animate the circuit drawing
 function animateCircuit(timestamp) {
     if (!startTime) startTime = timestamp;
     const segmentCount = pathPoints.length - 1;
@@ -27,6 +28,10 @@ function animateCircuit(timestamp) {
     const progress = (timestamp - startTime) / segmentDuration;
 
     if (progress >= 1) {
+        // Place a turning dot at the junctions with a black center
+        const currentPoint = pathPoints[currentSegment];
+        drawTurnDot(currentPoint.x, currentPoint.y);
+
         // Move to the next segment
         currentSegment += 1;
         startTime = timestamp;
@@ -67,7 +72,7 @@ function drawPathUpTo(segmentIndex, currentX, currentY) {
         context.lineTo(pathPoints[i + 1].x, pathPoints[i + 1].y);
     }
 
-    // Draw the current segment partially
+    // Draw the current segment partially, up to the moving dot
     if (segmentIndex < pathPoints.length - 1) {
         context.moveTo(pathPoints[segmentIndex].x, pathPoints[segmentIndex].y);
         context.lineTo(currentX, currentY);
@@ -91,6 +96,21 @@ function drawFinalPath() {
 // Draw the moving circle
 function drawMovingCircle(x, y) {
     context.fillStyle = "white";
+    context.beginPath();
+    context.arc(x, y, circleRadius, 0, 2 * Math.PI);
+    context.fill();
+}
+
+// Draw the "turning" dot with a black center
+function drawTurnDot(x, y) {
+    // Outer circle
+    context.fillStyle = "white";
+    context.beginPath();
+    context.arc(x, y, turnDotRadius, 0, 2 * Math.PI);
+    context.fill();
+
+    // Inner circle
+    context.fillStyle = "black";
     context.beginPath();
     context.arc(x, y, circleRadius, 0, 2 * Math.PI);
     context.fill();
