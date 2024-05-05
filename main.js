@@ -17,6 +17,7 @@ let startTime = null;
 const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 8;
 const turnDotRadius = 12;
+const drawnTurnDots = new Set(); // Track which dots have been drawn
 
 // Function to animate the circuit drawing
 function animateCircuit(timestamp) {
@@ -28,8 +29,8 @@ function animateCircuit(timestamp) {
     const progress = (timestamp - startTime) / segmentDuration;
 
     if (progress >= 1) {
-        // When moving to the next segment, draw a turning dot immediately
-        drawTurnDot(pathPoints[currentSegment].x, pathPoints[currentSegment].y);
+        // Add the current segment's start point as a drawn dot
+        drawnTurnDots.add(currentSegment);
 
         // Move to the next segment
         currentSegment += 1;
@@ -54,6 +55,11 @@ function animateCircuit(timestamp) {
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawPathUpTo(currentSegment, currentX, currentY);
 
+    // Draw previously marked turn dots
+    for (const segmentIndex of drawnTurnDots) {
+        drawTurnDot(pathPoints[segmentIndex].x, pathPoints[segmentIndex].y);
+    }
+
     // Draw the moving circle at the current position
     drawMovingCircle(currentX, currentY);
 
@@ -75,7 +81,7 @@ function drawPathUpTo(segmentIndex, currentX, currentY) {
 
     // Draw the current segment partially, up to the moving dot
     if (segmentIndex < pathPoints.length - 1) {
-        context.moveTo(pathPoints[segmentIndex].x, pathPoints[segmentIndex + 1].y);
+        context.moveTo(pathPoints[segmentIndex].x, pathPoints[segmentIndex].y);
         context.lineTo(currentX, currentY);
     }
 
@@ -96,13 +102,13 @@ function drawFinalPath() {
 
 // Draw the "turning" dot with a black center
 function drawTurnDot(x, y) {
-    // Outer circle
+    // Outer white circle
     context.fillStyle = "white";
     context.beginPath();
     context.arc(x, y, turnDotRadius, 0, 2 * Math.PI);
     context.fill();
 
-    // Inner circle
+    // Inner black circle
     context.fillStyle = "black";
     context.beginPath();
     context.arc(x, y, circleRadius, 0, 2 * Math.PI);
