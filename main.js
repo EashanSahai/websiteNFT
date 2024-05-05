@@ -17,6 +17,7 @@ let startTime = null;
 const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 8;
 const turnDotRadius = 12;
+const drawnTurnDots = new Set(); // To track which turn dots have been drawn
 
 // Function to animate the circuit drawing
 function animateCircuit(timestamp) {
@@ -28,11 +29,8 @@ function animateCircuit(timestamp) {
     const progress = (timestamp - startTime) / segmentDuration;
 
     if (progress >= 1) {
-        // Place a turning dot at the junctions with a black center
-        const currentPoint = pathPoints[currentSegment];
-        drawTurnDot(currentPoint.x, currentPoint.y);
-
         // Move to the next segment
+        drawnTurnDots.add(currentSegment); // Mark the current segment's start as a turning point
         currentSegment += 1;
         startTime = timestamp;
 
@@ -54,6 +52,13 @@ function animateCircuit(timestamp) {
     // Clear the canvas and redraw the path so far
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawPathUpTo(currentSegment, currentX, currentY);
+
+    // Draw turning dots that were reached previously
+    for (const segmentIndex of drawnTurnDots) {
+        drawTurnDot(pathPoints[segmentIndex].x, pathPoints[segmentIndex].y);
+    }
+
+    // Draw the moving circle at the current position
     drawMovingCircle(currentX, currentY);
 
     // Continue animation
@@ -93,14 +98,6 @@ function drawFinalPath() {
     context.stroke();
 }
 
-// Draw the moving circle
-function drawMovingCircle(x, y) {
-    context.fillStyle = "white";
-    context.beginPath();
-    context.arc(x, y, circleRadius, 0, 2 * Math.PI);
-    context.fill();
-}
-
 // Draw the "turning" dot with a black center
 function drawTurnDot(x, y) {
     // Outer circle
@@ -111,6 +108,14 @@ function drawTurnDot(x, y) {
 
     // Inner circle
     context.fillStyle = "black";
+    context.beginPath();
+    context.arc(x, y, circleRadius, 0, 2 * Math.PI);
+    context.fill();
+}
+
+// Draw the moving circle
+function drawMovingCircle(x, y) {
+    context.fillStyle = "white";
     context.beginPath();
     context.arc(x, y, circleRadius, 0, 2 * Math.PI);
     context.fill();
