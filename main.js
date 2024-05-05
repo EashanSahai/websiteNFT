@@ -17,7 +17,6 @@ let startTime = null;
 const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 8;
 const turnDotRadius = 12;
-const drawnTurnDots = new Set(); // Track which dots have been drawn
 
 // Function to animate the circuit drawing
 function animateCircuit(timestamp) {
@@ -29,8 +28,8 @@ function animateCircuit(timestamp) {
     const progress = (timestamp - startTime) / segmentDuration;
 
     if (progress >= 1) {
-        // Add the current segment's start point as a drawn dot
-        drawnTurnDots.add(currentSegment);
+        // Draw a turning dot at the current segment's start point
+        drawTurnDot(pathPoints[currentSegment].x, pathPoints[currentSegment].y);
 
         // Move to the next segment
         currentSegment += 1;
@@ -51,17 +50,22 @@ function animateCircuit(timestamp) {
     const currentX = start.x + progress * (end.x - start.x);
     const currentY = start.y + progress * (end.y - start.y);
 
-    // Clear the canvas and redraw the path so far
+    // Clear the canvas and redraw the path up to the current segment
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawPathUpTo(currentSegment, currentX, currentY);
 
-    // Draw previously marked turn dots
-    for (const segmentIndex of drawnTurnDots) {
-        drawTurnDot(pathPoints[segmentIndex].x, pathPoints[segmentIndex].y);
+    // Draw turning dots at completed segments
+    for (let i = 0; i < currentSegment; i++) {
+        drawTurnDot(pathPoints[i].x, pathPoints[i].y);
     }
 
     // Draw the moving circle at the current position
     drawMovingCircle(currentX, currentY);
+
+    // Draw the last turning dot if at the end
+    if (currentSegment === segmentCount) {
+        drawTurnDot(pathPoints[segmentCount].x, pathPoints[segmentCount].y);
+    }
 
     // Continue animation
     requestAnimationFrame(animateCircuit);
@@ -102,13 +106,13 @@ function drawFinalPath() {
 
 // Draw the "turning" dot with a black center
 function drawTurnDot(x, y) {
-    // Outer white circle
+    // Outer circle (white)
     context.fillStyle = "white";
     context.beginPath();
     context.arc(x, y, turnDotRadius, 0, 2 * Math.PI);
     context.fill();
 
-    // Inner black circle
+    // Inner circle (black)
     context.fillStyle = "black";
     context.beginPath();
     context.arc(x, y, circleRadius, 0, 2 * Math.PI);
