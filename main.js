@@ -25,7 +25,7 @@ function calculatePathPoints() {
     const headerRect = mainHeader.getBoundingClientRect();
     const canvasRect = canvas.getBoundingClientRect();
 
-    // Map the header coordinates directly to canvas coordinates
+    // Calculate path points forming a rectangle around the header
     pathPoints = [
         { x: headerRect.left - canvasRect.left - headerMargin, y: headerRect.top - canvasRect.top - headerMargin },
         { x: headerRect.right - canvasRect.left + headerMargin, y: headerRect.top - canvasRect.top - headerMargin },
