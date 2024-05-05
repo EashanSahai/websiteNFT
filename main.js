@@ -1,11 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('circuitCanvas');
-    const ctx = canvas.getContext('2d');
-    const content = document.getElementById('content');
-    const h1 = content.querySelector('h1');
-    const h2 = content.querySelector('h2');
-    const nextButton = document.getElementById('nextButton');
-    const blinkDuration = 3000; // Blinking effect for 3 seconds
 // Initialization
 const canvas = document.getElementById("animationCanvas");
 const context = canvas.getContext("2d");
