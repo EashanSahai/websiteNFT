@@ -1,9 +1,9 @@
-// Function to draw a circuit around an element
+// Function to draw a circuit around an element (section)
 function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder) {
     const element = document.getElementById(elementId);
     if (!element) return;
 
-    // Ensure the canvas size matches the entire document
+    // Create a full-page canvas
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.top = 0;
@@ -14,19 +14,19 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
-    const margin = 10; // Adjusted margin to surround only the text closely
+    const margin = 20; // Margin around the section
     const circleRadius = 12;
     const turnDotRadius = 10;
 
-    // Get the dimensions of the text itself within the bounding rectangle
-    const textRect = element.getBoundingClientRect();
+    // Get the section's dimensions within the bounding rectangle
+    const sectionRect = element.getBoundingClientRect();
 
-    // Define the path points with a small margin around the text
+    // Define the path points with a margin around the section
     const pathPoints = [
-        { x: textRect.left - margin, y: textRect.top - margin },
-        { x: textRect.right + margin, y: textRect.top - margin },
-        { x: textRect.right + margin, y: textRect.bottom + margin },
-        { x: textRect.left - margin, y: textRect.bottom + margin }
+        { x: sectionRect.left - margin, y: sectionRect.top - margin },
+        { x: sectionRect.right + margin, y: sectionRect.top - margin },
+        { x: sectionRect.right + margin, y: sectionRect.bottom + margin },
+        { x: sectionRect.left - margin, y: sectionRect.bottom + margin }
     ];
 
     // Reorder path points based on the provided drawing order
@@ -86,6 +86,9 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
             // Draw the final turning dot and moving circle
             drawTurnDot(orderedPath[segmentCount].x, orderedPath[segmentCount].y);
             drawMovingCircle(orderedPath[segmentCount].x, orderedPath[segmentCount].y);
+
+            // Make the section contents visible after drawing
+            revealContents(elementId);
         }
     }
 
@@ -135,4 +138,12 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
 
     // Start the circuit animation
     requestAnimationFrame(animateCircuit);
+}
+
+// Function to reveal the contents after drawing the circuit
+function revealContents(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.style.opacity = 1; // Fully visible
+    }
 }
