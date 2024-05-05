@@ -26,16 +26,16 @@ body {
 }
 
 h1, h2 {
-    margin: 0;
-    padding: 20px;
-    opacity: 0;
-    transition: opacity 2s ease-in-out;
+    text-align: center;
+    color: white;
 }
 
 h2 {
     font-style: italic;
 }
-
+#main-header {
+    margin-top: 20px;
+}
 footer {
     margin-top: 50px;
 }
