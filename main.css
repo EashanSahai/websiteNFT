@@ -1,35 +1,53 @@
-/* Ensure the canvas is positioned correctly and behind other elements */
-canvas {
-    z-index: -1;
+/* General body styles */
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-/* Target header styles */
-h1, h2 {
-    position: relative; /* or absolute if required */
-    margin: 20px;
-    color: #fff; /* Adjust to your preferred color */
+/* Section layout */
+#content-section {
+    position: relative;
+    margin: 50px auto;
+    width: 80%;
     text-align: center;
 }
 
-/* Example body styles */
-body {
-    background-color: #000; /* Adjust to your desired background */
-    color: #fff; /* Adjust for readability */
-    font-family: Arial, sans-serif; /* Adjust to your preferred font */
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-/* Additional custom styles */
-#main-header {
+/* Header styles */
+#header-text {
     font-size: 3em;
     font-weight: bold;
+    margin: 20px 0;
 }
 
-#caption {
+/* Caption styles */
+#caption-text {
     font-style: italic;
     font-size: 1.5em;
-    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+/* Example image styles */
+#example-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Button styles */
+#action-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+#action-button:hover {
+    background-color: #0056b3;
 }
