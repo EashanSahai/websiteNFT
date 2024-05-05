@@ -26,7 +26,6 @@ function drawDot(x, y) {
     context.arc(x, y, 8, 0, 2 * Math.PI);
     context.fill();
 }
-
 // Function to draw circuit lines
 function drawCircuit() {
     context.strokeStyle = "white";
@@ -40,6 +39,18 @@ function drawCircuit() {
 
     context.stroke();
 }
+function fadeIn(element) {
+    element.style.display = 'block';
+    element.style.opacity = 0;
+    let opacity = 0;
+    const interval = setInterval(() => {
+        opacity += 0.05;
+        if (opacity >= 1) {
+            clearInterval(interval);
+        }
+        element.style.opacity = opacity;
+    }, 50);
+}
 
 // Animation initiation
 function startAnimation() {
@@ -51,8 +62,11 @@ function startAnimation() {
         clearInterval(blinkInterval);
         context.clearRect(0, 0, canvas.width, canvas.height);
         drawCircuit();
+
+        // After circuit is drawn, fade in headers
+        fadeIn(mainHeader);
+        fadeIn(caption);
     }, 3000);
 }
-
 // Start the animation
 startAnimation();
