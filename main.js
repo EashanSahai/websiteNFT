@@ -3,12 +3,14 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
     const element = document.getElementById(elementId);
     if (!element) return;
 
+    // Create a full-page canvas
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.top = 0;
     canvas.style.left = 0;
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
+    canvas.style.zIndex = -1;
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
