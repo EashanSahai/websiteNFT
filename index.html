@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Reusable Circuit Drawing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cajal's Imaginarium</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <h1 id="main-header">Circuit Draw Example</h1>
-    <h2 id="caption">This will have a circuit drawn around it.</h2>
+    <div style="position: relative; width: 100%;">
+        <!-- Header elements -->
+        <h1 id="main-header">Cajal's Imaginarium</h1>
+        <h2 id="caption" style="font-style: italic;">The Nexus Between Science, Art, and You</h2>
+    </div>
 
-    <script src="circuit-drawing.js"></script>
+    <!-- External JavaScript -->
+    <script src="main.js"></script>
     <script>
-        // Call the function to draw around 'main-header'
+        // Draw bounding boxes with specified order around 'main-header' and 'caption'
         drawCircuitAroundElement('main-header', null, null, [0, 1, 2, 3]);
-
-        // Example usage for another element
         drawCircuitAroundElement('caption', null, null, [0, 1, 2, 3]);
     </script>
 </body>
