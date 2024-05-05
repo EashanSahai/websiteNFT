@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <canvas id="animationCanvas" width="800" height="600"></canvas>
-    <h1 id="main-header" style="display: none;">Cajal's Imaginarium</h1>
-    <h2 id="caption" style="display: none; font-style: italic;">The Nexus Between Science, Art, and You</h2>
+    <div style="position: relative; width: 100%;">
+        <!-- Canvas as a background -->
+        <canvas id="animationCanvas" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas>
 
-    <footer>
-        <button id="nextButton">&rarr; Next</button>
-    </footer>
-
+        <!-- Header elements over the canvas -->
+        <div style="position: relative; z-index: 2;">
+            <h1 id="main-header">Cajal's Imaginarium</h1>
+            <h2 id="caption" style="font-style: italic;">The Nexus Between Science, Art, and You</h2>
+        </div>
+    </div>
     <script src="main.js"></script>
 </body>
 </html>
