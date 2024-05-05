@@ -5,18 +5,41 @@ const context = canvas.getContext("2d");
 const mainHeader = document.getElementById("main-header");
 const caption = document.getElementById("caption");
 
-const pathPoints = [
-    { x: 100, y: 300 },
-    { x: 200, y: 300 },
-    { x: 200, y: 200 },
-    { x: 500, y: 200 }
-];
-
+const headerMargin = 20;
+let pathPoints = [];
 let currentSegment = 0;
 let startTime = null;
 const duration = 5000; // Duration in milliseconds (5 seconds)
 const circleRadius = 12;
 const turnDotRadius = 10;
+
+function resizeCanvas() {
+    canvas.width = canvas.parentElement.offsetWidth;
+    canvas.height = canvas.parentElement.offsetHeight;
+    calculatePathPoints();
+}
+
+function calculatePathPoints() {
+    const headerRect = mainHeader.getBoundingClientRect();
+    const captionRect = caption.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+
+    // Convert DOM coordinates to canvas coordinates
+    const offsetX = canvasRect.left;
+    const offsetY = canvasRect.top;
+
+    pathPoints = [
+        { x: headerRect.left - offsetX - headerMargin, y: headerRect.top - offsetY - headerMargin },
+        { x: headerRect.right - offsetX + headerMargin, y: headerRect.top - offsetY - headerMargin },
+        { x: headerRect.right - offsetX + headerMargin, y: headerRect.bottom - offsetY + headerMargin },
+        { x: headerRect.left - offsetX - headerMargin, y: headerRect.bottom - offsetY + headerMargin }
+    ];
+
+    // Reset animation
+    currentSegment = 0;
+    startTime = null;
+    requestAnimationFrame(animateCircuit);
+}
 
 // Function to animate the circuit drawing
 function animateCircuit(timestamp) {
@@ -44,7 +67,7 @@ function animateCircuit(timestamp) {
         }
     }
 
-    // Calculate current position along the path using linear interpolation
+    // Calculate the current position along the path using linear interpolation
     const start = pathPoints[currentSegment];
     const end = pathPoints[currentSegment + 1];
     const currentX = start.x + progress * (end.x - start.x);
@@ -74,7 +97,7 @@ function drawPathUpTo(segmentIndex, currentX, currentY) {
 
     // Draw all completed segments
     for (let i = 0; i < segmentIndex; i++) {
-        context.moveTo(pathPoints[i].x, pathPoints[i].y);
+        context.moveTo(pathPoints[i].x, pathPoints[i + 1].y);
         context.lineTo(pathPoints[i + 1].x, pathPoints[i + 1].y);
     }
 
@@ -127,5 +150,6 @@ function fadeIn(element) {
     }, 50);
 }
 
-// Start the circuit animation
-requestAnimationFrame(animateCircuit);
+// Adjust canvas size and recalculate points on window resize
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
