@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cajal's Imaginarium</title>
+    <title>Dynamic Section Layout</title>
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <div style="position: relative; width: 100%;">
-        <!-- Header elements -->
-        <h1 id="main-header">Cajal's Imaginarium</h1>
-        <h2 id="caption" style="font-style: italic;">The Nexus Between Science, Art, and You</h2>
-    </div>
+    <section id="content-section">
+        <h1 id="header-text">Cajal's Imaginarium</h1>
+        <h2 id="caption-text">The Nexus Between Science, Art, and You</h2>
+        <img id="example-image" src="example.jpg" alt="Example Image" />
+        <button id="action-button">Learn More</button>
+    </section>
 
-    <!-- External JavaScript -->
+    <!-- JavaScript -->
     <script src="main.js"></script>
     <script>
-        // Draw bounding boxes with specified order around 'main-header' and 'caption'
-        drawCircuitAroundElement('main-header', null, null, [0, 1, 2, 3]);
-        //drawCircuitAroundElement('caption', null, null, [0, 1, 2, 3]);
+        // Draw bounding box around the content section
+        drawCircuitAroundElement('content-section', null, null, [0, 1, 2, 3]);
     </script>
 </body>
 </html>
