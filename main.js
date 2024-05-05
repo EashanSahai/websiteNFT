@@ -3,27 +3,30 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
     const element = document.getElementById(elementId);
     if (!element) return;
 
-    // Create a full-page canvas
+    // Ensure the canvas size matches the entire document
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.top = 0;
     canvas.style.left = 0;
-    canvas.width = document.body.clientWidth;
-    canvas.height = document.body.clientHeight;
+    canvas.width = document.body.scrollWidth;
+    canvas.height = document.body.scrollHeight;
     canvas.style.zIndex = -1;
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
-    const margin = 20;
+    const margin = 10; // Adjusted margin to surround only the text closely
     const circleRadius = 12;
     const turnDotRadius = 10;
 
-    const elementRect = element.getBoundingClientRect();
+    // Get the dimensions of the text itself within the bounding rectangle
+    const textRect = element.getBoundingClientRect();
+
+    // Define the path points with a small margin around the text
     const pathPoints = [
-        { x: elementRect.left - margin, y: elementRect.top - margin },
-        { x: elementRect.right + margin, y: elementRect.top - margin },
-        { x: elementRect.right + margin, y: elementRect.bottom + margin },
-        { x: elementRect.left - margin, y: elementRect.bottom + margin }
+        { x: textRect.left - margin, y: textRect.top - margin },
+        { x: textRect.right + margin, y: textRect.top - margin },
+        { x: textRect.right + margin, y: textRect.bottom + margin },
+        { x: textRect.left - margin, y: textRect.bottom + margin }
     ];
 
     // Reorder path points based on the provided drawing order
@@ -32,6 +35,7 @@ function drawCircuitAroundElement(elementId, startPoint, endPoint, drawingOrder)
     // Add start and end points if provided
     if (startPoint) orderedPath.unshift(startPoint);
     if (endPoint) orderedPath.push(endPoint);
+    else orderedPath.push(orderedPath[0]); // Close the path
 
     let currentSegment = 0;
     let startTime = null;
