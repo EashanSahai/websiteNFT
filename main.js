@@ -46,7 +46,7 @@ function drawCircuitBoxesSequentially(elements) {
     // Function to draw the persistent path and turning dots without delay
     function drawPersistentPath() {
         context.strokeStyle = "white";
-        context.lineWidth = 2;
+        context.lineWidth = 5;
         context.beginPath();
     
         // Draw all the paths stored in the persistent path
