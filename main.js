@@ -72,7 +72,7 @@ function drawCircuitBoxesSequentially(elements) {
         context.lineWidth = 5;
 
         // Draw all the paths stored in the persistent path
-        for (let i = 0; i < persistentPath.length - 1; i++) {
+        for (let i = 0; i < connectorPath.length - 1; i++) {
             const start = connectorPath[i];
             const end = connectorPath[i + 1];
             context.moveTo(start.x, start.y);
@@ -108,7 +108,7 @@ function drawCircuitBoxesSequentially(elements) {
 
             // Update the persistent path
             persistentPath.push({ x: currentX, y: currentY });
-
+            connectorPath.push({ x: currentX, y: currentY });
             // Clear the drawing area and redraw the persistent path
             context.clearRect(0, 0, canvas.width, canvas.height);
             drawPersistentPathConnector();
