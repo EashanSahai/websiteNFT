@@ -1,5 +1,6 @@
-// Function to draw sequential circuit boxes around specified elements
+// Function to draw sequential circuit boxes with persistent drawing
 function drawCircuitBoxesSequentially(elements) {
+    // Create and configure the canvas
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.top = 0;
@@ -10,31 +11,24 @@ function drawCircuitBoxesSequentially(elements) {
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
-    const margin = 10; // Adjust margin around each box
     const circleRadius = 12;
     const turnDotRadius = 10;
+    const margin = 10;
 
-    // Prepare path points for all specified elements sequentially
-    const orderedPaths = [];
-    for (const elementId of elements) {
+    // Set up a persistent path to store all paths drawn
+    let persistentPath = [];
+    let currentPathIndex = 0;
+    let currentSegment = 0;
+    let startTime = null;
+    const duration = 2000; // Duration per box drawing (2 seconds)
+
+    // Calculate the ordered paths for each specified element
+    const orderedPaths = elements.map(elementId => {
         const element = document.getElementById(elementId);
-        if (!element) continue;
+        if (!element) return null;
 
-        // Calculate accurate dimensions based on content type
-        let elementRect = element.getBoundingClientRect();
-        const styles = getComputedStyle(element);
-
-        // Adjust based on the computed styles and specific tag types
-        if (element.tagName === 'IMG') {
-            elementRect = {
-                left: elementRect.left,
-                top: elementRect.top,
-                right: elementRect.left + parseInt(styles.width),
-                bottom: elementRect.top + parseInt(styles.height)
-            };
-        }
-
-        // Calculate the bounding box with a specified margin
+        // Get bounding box including borders and calculate the path points
+        const elementRect = element.getBoundingClientRect();
         const pathPoints = [
             { x: elementRect.left - margin, y: elementRect.top - margin },
             { x: elementRect.right + margin, y: elementRect.top - margin },
@@ -42,18 +36,28 @@ function drawCircuitBoxesSequentially(elements) {
             { x: elementRect.left - margin, y: elementRect.bottom + margin }
         ];
 
-        orderedPaths.push(pathPoints);
-
         // Initially hide the element
         element.style.opacity = 0;
+
+        return pathPoints;
+    }).filter(Boolean);
+
+    // Function to draw a complete path up to a given point
+    function drawPersistentPath() {
+        context.strokeStyle = "white";
+        context.lineWidth = 2;
+        context.beginPath();
+
+        // Draw all the paths stored in the persistent path
+        for (let i = 0; i < persistentPath.length - 1; i++) {
+            context.moveTo(persistentPath[i].x, persistentPath[i].y);
+            context.lineTo(persistentPath[i + 1].x, persistentPath[i + 1].y);
+        }
+
+        context.stroke();
     }
 
-    let currentPathIndex = 0;
-    let currentSegment = 0;
-    let startTime = null;
-    const duration = 2000; // Duration per box drawing (500 milliseconds)
-
-    // Function to animate the circuit drawing
+    // Function to animate drawing the current path
     function animateCircuit(timestamp) {
         if (!startTime) startTime = timestamp;
         const currentPath = orderedPaths[currentPathIndex];
@@ -72,12 +76,15 @@ function drawCircuitBoxesSequentially(elements) {
             const currentX = start.x + progress * (end.x - start.x);
             const currentY = start.y + progress * (end.y - start.y);
 
-            // Clear the canvas and redraw the path up to the current segment
+            // Add the current position to the persistent path
+            persistentPath.push({ x: currentX, y: currentY });
+
+            // Clear only the drawn paths and redraw the persistent path
             context.clearRect(0, 0, canvas.width, canvas.height);
-            drawPathUpTo(currentPath, currentSegment, currentX, currentY);
+            drawPersistentPath();
 
             // Draw all previously drawn turning dots up to the current segment
-            for (let i = 0; i <= currentSegment; i++) {
+            for (let i = 0; i < currentSegment; i++) {
                 drawTurnDot(currentPath[i].x, currentPath[i].y);
             }
 
@@ -99,37 +106,37 @@ function drawCircuitBoxesSequentially(elements) {
             // Reveal the current element after its box is drawn
             revealElement(elements[currentPathIndex]);
 
+            // Store the starting point for the next box
+            persistentPath.push(currentPath[0]);
+
             // Move to the next path
             currentPathIndex += 1;
             currentSegment = 0;
             startTime = null;
 
             if (currentPathIndex < orderedPaths.length) {
+                // Draw a transition to the next starting point using straight lines
+                drawTransitionToNextPath(orderedPaths[currentPathIndex][0]);
                 requestAnimationFrame(animateCircuit);
             }
         }
     }
-    
-    function drawPathUpTo(currentPath, segmentIndex, currentX, currentY) {
-        context.strokeStyle = "white";
-        context.lineWidth = 2;
-        context.beginPath();
-    
-        // Draw all completed segments
-        for (let i = 0; i < segmentIndex; i++) {
-            context.moveTo(currentPath[i].x, currentPath[i].y);
-            context.lineTo(currentPath[i + 1].x, currentPath[i + 1].y);
-        }
-    
-        // Draw the current segment partially up to the moving circle
-        if (segmentIndex <= currentPath.length - 1) {
-            context.moveTo(currentPath[segmentIndex].x, currentPath[segmentIndex].y);
-            context.lineTo(currentX, currentY);
-        }
-    
-        context.stroke();
+
+    // Draw the transition to the next path start point
+    function drawTransitionToNextPath(nextStart) {
+        const lastPoint = persistentPath[persistentPath.length - 1];
+
+        // Draw vertical line to match the x-coordinate
+        persistentPath.push({ x: lastPoint.x, y: nextStart.y });
+
+        // Draw horizontal line to match the y-coordinate
+        persistentPath.push({ x: nextStart.x, y: nextStart.y });
+
+        // Update the persistent path on the canvas
+        drawPersistentPath();
     }
-    // Draw the "turning" dot with a black center
+
+    // Draw a turning dot with a black center
     function drawTurnDot(x, y) {
         // Outer circle (white)
         context.fillStyle = "white";
