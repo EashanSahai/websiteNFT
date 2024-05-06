@@ -89,13 +89,13 @@ function drawCircuitBoxesSequentially(elements) {
             // Clear only the drawing area and redraw the persistent path
             context.clearRect(0, 0, canvas.width, canvas.height);
             drawPersistentPath();
-            drawTurnDot(start.x, start.y);
             // Draw the moving circle at the current position
             drawMovingCircle(currentX, currentY);
     
             // Draw the turning dot immediately after the segment is fully drawn
             if (progress >= 1) {
                 turningPoints.push(start);
+                drawTurnDot(start.x, start.y);
                 // Move to the next segment
                 currentSegment += 1;
                 startTime = timestamp;
