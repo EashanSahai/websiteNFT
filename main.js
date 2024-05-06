@@ -51,7 +51,7 @@ function drawCircuitBoxesSequentially(elements) {
     let currentPathIndex = 0;
     let currentSegment = 0;
     let startTime = null;
-    const duration = 500; // Duration per box drawing (500 milliseconds)
+    const duration = 1000; // Duration per box drawing (500 milliseconds)
 
     // Function to animate the circuit drawing
     function animateCircuit(timestamp) {
