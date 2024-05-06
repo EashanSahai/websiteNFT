@@ -48,7 +48,10 @@ function drawCircuitBoxesSequentially(elements) {
         context.strokeStyle = "white";
         context.lineWidth = 2;
         context.beginPath();
-    
+        // Draw all previously stored turning dots immediately
+        for (const point of turningPoints) {
+            drawTurnDot(point.x, point.y);
+        }
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
             const start = persistentPath[i];
@@ -58,11 +61,6 @@ function drawCircuitBoxesSequentially(elements) {
         }
     
         context.stroke();
-    
-        // Draw all previously stored turning dots immediately
-        for (const point of turningPoints) {
-            drawTurnDot(point.x, point.y);
-        }
     }
     
     // Function to animate drawing the current path and turning dots
