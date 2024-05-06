@@ -25,17 +25,6 @@ body {
     border: 3px solid #ffffff; /* Visible white border */
     box-sizing: border-box;
 }
-
-/* Add borders around other elements if desired */
-#header-text, #caption-text, #action-button {
-    border: 3px solid #ffffff; /* Visible white border */
-    box-sizing: border-box;
-    margin: 20px auto;
-    text-align: center;
-    display: block;
-    transition: opacity 0.5s ease-in;
-    opacity: 0; /* Initially hidden */
-}
 /* Header styles */
 #header-text {
     font-size: 6em;
