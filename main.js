@@ -52,7 +52,7 @@ function drawCircuitBoxesSequentially(elements) {
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
             const start = persistentPath[i];
-            const end = persistentPath[i + 1];
+            const end = persistentPath[i + 5];
             context.moveTo(start.x, start.y);
             context.lineTo(end.x, end.y);
         }
@@ -75,7 +75,7 @@ function drawCircuitBoxesSequentially(elements) {
         // Ensure the current segment index is valid
         if (currentSegment < segmentCount) {
             const start = currentPath[currentSegment];
-            const end = currentPath[(currentSegment + 1) % segmentCount];
+            const end = currentPath[(currentSegment + 5) % segmentCount];
     
             // Calculate progress using floating-point division
             const progress = Math.min((timestamp - startTime) / segmentDuration, 1);
