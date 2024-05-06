@@ -17,6 +17,7 @@ function drawCircuitBoxesSequentially(elements) {
     // Persistent path and turning points
     let persistentPath = [];
     let turningPoints = [];
+    let connectorPath = [];
     let currentPathIndex = 0;
     let currentSegment = 0;
     let startTime = null;
@@ -43,17 +44,32 @@ function drawCircuitBoxesSequentially(elements) {
     }).filter(Boolean);
 
     // Function to draw a persistent path with a specified style
-    function drawPersistentPath(type = 'Box') {
+    function drawPersistentPath() {
         context.beginPath();
 
-        // Apply distinct styles for connector and box paths
-        if (type === 'Connector') {
-            context.strokeStyle = "yellow";
-            context.lineWidth = 5;
-        } else {
-            context.strokeStyle = "white";
-            context.lineWidth = 10;
+        // Apply distinct styles for box paths
+        context.strokeStyle = "white";
+        context.lineWidth = 10;
+
+        // Draw all the paths stored in the persistent path
+        for (let i = 0; i < persistentPath.length - 1; i++) {
+            const start = persistentPath[i];
+            const end = persistentPath[i + 1];
+            context.moveTo(start.x, start.y);
+            context.lineTo(end.x, end.y);
         }
+
+        context.stroke();
+
+        // Draw all previously stored turning dots
+        for (const point of turningPoints) {
+            drawTurnDot(point.x, point.y);
+        }
+    }
+    function drawPersistentPathConnector() {
+        context.beginPath();
+        context.strokeStyle = "yellow";
+        context.lineWidth = 5;
 
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
@@ -95,7 +111,8 @@ function drawCircuitBoxesSequentially(elements) {
 
             // Clear the drawing area and redraw the persistent path
             context.clearRect(0, 0, canvas.width, canvas.height);
-            drawPersistentPath('Box');
+            drawPersistentPathConnector();
+            drawPersistentPath();
 
             // Draw the moving circle at the current position
             drawMovingCircle(currentX, currentY);
@@ -146,7 +163,7 @@ function drawCircuitBoxesSequentially(elements) {
         persistentPath.push({ x: nextStart.x, y: nextStart.y });
 
         // Update the persistent path on the canvas with connector style
-        drawPersistentPath('Connector');
+        drawPersistentPathConnector();
     }
 
     // Draw a turning dot with a black center
