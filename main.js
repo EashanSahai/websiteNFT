@@ -46,11 +46,10 @@ function drawCircuitBoxesSequentially(elements) {
     // Function to draw the persistent path and turning dots without delay
     function drawPersistentPath(a) {
         a = a || 0
-        if(a=='Connector'){
+        if(a==='Connector') {
             context.strokeStyle = "yellow";
             context.lineWidth = 5;
-        }
-        else {
+        }   else {
             context.strokeStyle = "white";
             context.lineWidth = 10;
         }
