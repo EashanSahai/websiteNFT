@@ -77,8 +77,16 @@ function drawCircuitBoxesSequentially(elements) {
         for (let i = 0; i < connectorPath.length - 1; i++) {
             const start = connectorPath[i];
             const end = connectorPath[i + 1];
-            context.moveTo(start.x-2.5, start.y-2.5);
-            context.lineTo(end.x+2.5, end.y+2.5);
+            context.moveTo(start.x, start.y);
+            if (end.x < start.x) {
+                context.lineTo(end.x - context.lineWidth/2, end.y);
+            } else if (end.x > start.x) {
+                context.lineTo(end.x + context.lineWidth/2, end.y);
+            } else if (end.y < start.y) {
+                context.lineTo(end.x, end.y - context.lineWidth/2);
+            } else if (end.y > start.y) {
+                context.lineTo(end.x, end.y + context.lineWidth/2);
+            }
         }
 
         context.stroke();
