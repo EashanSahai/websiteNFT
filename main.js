@@ -164,17 +164,13 @@ function drawCircuitBoxesSequentially(elements) {
         const lastPoint = turningPoints[turningPoints.length - 2];
         connectorPath.push({ x: lastPoint.x, y: lastPoint.y});
         connectorPath.push({ x: lastPoint.x - 100, y: lastPoint.y});
-        drawPersistentPathConnector();
-        requestAnimationFrame(animateCircuit);
+        requestAnimationFrame(drawPersistentPathConnector);
         connectorPath.push({ x: lastPoint.x - 100, y: nextStart.y - 35 });
-        drawPersistentPathConnector();
-        requestAnimationFrame(animateCircuit);
+        requestAnimationFrame(drawPersistentPathConnector);
         connectorPath.push({ x: nextStart.x, y: nextStart.y - 35 });
-        drawPersistentPathConnector();
-        requestAnimationFrame(animateCircuit);
+        requestAnimationFrame(drawPersistentPathConnector);
         connectorPath.push({ x: nextStart.x, y: nextStart.y });
-        drawPersistentPathConnector();
-        requestAnimationFrame(animateCircuit);
+        requestAnimationFrame(drawPersistentPathConnector);
         
         // Update the persistent path on the canvas with connector style
     }
