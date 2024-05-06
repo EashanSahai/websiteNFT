@@ -1,4 +1,3 @@
-// Function to draw sequential circuit boxes with persistent drawing
 function drawCircuitBoxesSequentially(elements) {
     // Create and configure the canvas
     const canvas = document.createElement('canvas');
@@ -45,10 +44,10 @@ function drawCircuitBoxesSequentially(elements) {
 
     // Function to draw the persistent path and turning dots without delay
     function drawPersistentPath() {
-        
         context.strokeStyle = "white";
         context.lineWidth = 10;
         context.beginPath();
+    
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
             const start = persistentPath[i];
@@ -64,7 +63,7 @@ function drawCircuitBoxesSequentially(elements) {
             drawTurnDot(point.x, point.y);
         }
     }
-    // For connector
+    
     // Function to animate drawing the current path and turning dots
     function animateCircuit(timestamp) {
         if (!startTime) startTime = timestamp;
@@ -129,9 +128,9 @@ function drawCircuitBoxesSequentially(elements) {
 
     // Draw the transition to the next path start point
     function drawTransitionToNextPath(nextStart) {
-        const lastPoint = persistentPath[persistentPath.length - 1];
+        const lastPoint = persistentPath[persistentPath.length - 1];        
         // Draw vertical line to match the x-coordinate
-        persistenPath.push({ x: lastPoint.x, y: nextStart.y - 35});
+        persistentPath.push({ x: lastPoint.x, y: nextStart.y - 35});
 
         // Draw horizontal line to match the y-coordinate
         persistentPath.push({ x: nextStart.x, y: nextStart.y - 35});
