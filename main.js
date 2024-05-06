@@ -137,7 +137,7 @@ function drawCircuitBoxesSequentially(elements) {
         // Draw horizontal line to match the y-coordinate
         persistentPath.push({ x: nextStart.x, y: nextStart.y/2 });
 
-        persistantPath.push({ x: nextStart.x, y: nextStart.y});
+        persistentPath.push({ x: nextStart.x, y: nextStart.y});
 
         // Update the persistent path on the canvas
         drawPersistentPath();
