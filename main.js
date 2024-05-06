@@ -155,6 +155,7 @@ function drawCircuitBoxesSequentially(elements) {
             if (currentPathIndex < orderedPaths.length) {
                 // Draw a transition to the next starting point
                 drawTransitionToNextPath(orderedPaths[currentPathIndex][0]);
+                requestAnimationFrame(animateCircuit)
             }
         }
     }
@@ -164,13 +165,10 @@ function drawCircuitBoxesSequentially(elements) {
         const lastPoint = turningPoints[turningPoints.length - 2];
         connectorPath.push({ x: lastPoint.x, y: lastPoint.y});
         connectorPath.push({ x: lastPoint.x - 100, y: lastPoint.y});
-        requestAnimationFrame(drawPersistentPathConnector);
         connectorPath.push({ x: lastPoint.x - 100, y: nextStart.y - 35 });
-        requestAnimationFrame(drawPersistentPathConnector);
         connectorPath.push({ x: nextStart.x, y: nextStart.y - 35 });
-        requestAnimationFrame(drawPersistentPathConnector);
         connectorPath.push({ x: nextStart.x, y: nextStart.y });
-        requestAnimationFrame(drawPersistentPathConnector);
+        drawPersistentPathConnector();
         
         // Update the persistent path on the canvas with connector style
     }
