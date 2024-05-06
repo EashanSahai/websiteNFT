@@ -48,10 +48,7 @@ function drawCircuitBoxesSequentially(elements) {
         context.strokeStyle = "white";
         context.lineWidth = 2;
         context.beginPath();
-        // Draw all previously stored turning dots immediately
-        for (const point of turningPoints) {
-            drawTurnDot(point.x, point.y);
-        }
+        
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
             const start = persistentPath[i];
@@ -59,7 +56,11 @@ function drawCircuitBoxesSequentially(elements) {
             context.moveTo(start.x, start.y);
             context.lineTo(end.x, end.y);
         }
-    
+        // Draw all previously stored turning dots immediately
+        for (const point of turningPoints) {
+            drawTurnDot(point.x, point.y);
+        }
+        
         context.stroke();
     }
     
@@ -83,6 +84,7 @@ function drawCircuitBoxesSequentially(elements) {
             const currentY = start.y + progress * (end.y - start.y);
     
             // Update the persistent path
+            turningPoints.push(start);
             persistentPath.push({ x: currentX, y: currentY });
     
             // Clear only the drawing area and redraw the persistent path
@@ -95,7 +97,6 @@ function drawCircuitBoxesSequentially(elements) {
             // Draw the turning dot immediately after the segment is fully drawn
             if (progress >= 1) {
                 drawTurnDot(start.x, start.y);
-                turningPoints.push(start);
     
                 // Move to the next segment
                 currentSegment += 1;
