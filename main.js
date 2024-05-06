@@ -145,7 +145,7 @@ function drawCircuitBoxesSequentially(elements) {
         persistentPath.push({ x: nextStart.x, y: nextStart.y});
 
         // Update the persistent path on the canvas
-        drawPersistentPath('Connector');
+        drawPersistentPath();
     }
 
     // Draw a turning dot with a black center
