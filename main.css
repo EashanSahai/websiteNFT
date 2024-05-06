@@ -17,8 +17,8 @@ body {
 }
 /* Add a visible border around images */
 #example-image {
-    width: 300px;  /* Explicit width */
-    height: 200px; /* Explicit height */
+    width: 600px;  /* Explicit width */
+    height: 400px; /* Explicit height */
     margin: 20px auto;
     display: block;
     border: 3px solid #ffffff; /* Visible white border */
@@ -39,8 +39,8 @@ body {
 #header-text {
     font-size: 3em;
     font-weight: bold;
-    width: 300px;
-    margin: 5px auto;
+    width: 500px;
+    margin: 10px auto;
     opacity: 0;
     transition: opacity 0.5s ease-in;
 }
@@ -50,7 +50,7 @@ body {
     font-style: italic;
     font-size: 1.5em;
     width: 300px;
-    margin: 5px auto;
+    margin: 10px auto;
     opacity: 0;
     transition: opacity 0.5s ease-in;
 }
