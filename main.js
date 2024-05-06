@@ -43,20 +43,22 @@ function drawCircuitBoxesSequentially(elements) {
         return pathPoints;
     }).filter(Boolean);
 
-    // Function to draw a complete path up to a given point
+    // Function to draw a complete path up to a given point without overshooting
     function drawPersistentPath() {
         context.strokeStyle = "white";
         context.lineWidth = 2;
         context.beginPath();
-
+    
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
-            context.moveTo(persistentPath[i].x, persistentPath[i].y);
-            context.lineTo(persistentPath[i + 1].x, persistentPath[i + 1].y);
+            const start = persistentPath[i];
+            const end = persistentPath[i + 1];
+            context.moveTo(start.x, start.y);
+            context.lineTo(end.x, end.y);
         }
-
+    
         context.stroke();
-
+    
         // Draw all previously stored turning dots
         for (const point of turningPoints) {
             drawTurnDot(point.x, point.y);
@@ -130,10 +132,12 @@ function drawCircuitBoxesSequentially(elements) {
         const lastPoint = persistentPath[persistentPath.length - 1];
 
         // Draw vertical line to match the x-coordinate
-        persistentPath.push({ x: lastPoint.x, y: nextStart.y });
+        persistentPath.push({ x: lastPoint.x, y: nextStart.y/2 });
 
         // Draw horizontal line to match the y-coordinate
-        persistentPath.push({ x: nextStart.x, y: nextStart.y });
+        persistentPath.push({ x: nextStart.x, y: nextStart.y/2 });
+
+        persistantPath.push({ x: nextStart.x, y: nextStart.y});
 
         // Update the persistent path on the canvas
         drawPersistentPath();
