@@ -161,7 +161,7 @@ function drawCircuitBoxesSequentially(elements) {
 
     // Draw the transition to the next path starting point
     function drawTransitionToNextPath(nextStart) {
-        const lastPoint = persistentPath[persistentPath.length - 10];
+        const lastPoint = turningPoints[turningPoints.length];
         connectorPath.push({ x: lastPoint.x - 100, y: lastPoint.y});
         connectorPath.push({ x: lastPoint.x - 100, y: nextStart.y - 35 });
         connectorPath.push({ x: nextStart.x, y: nextStart.y - 35 });
