@@ -140,6 +140,7 @@ function drawCircuitBoxesSequentially(elements) {
     
             if (currentPathIndex < orderedPaths.length) {
                 // Draw a transition to the next starting point
+                drawPersistentPathConnector();
                 drawTransitionToNextPath(orderedPaths[currentPathIndex][0]);
                 requestAnimationFrame(animateCircuit);
             }
