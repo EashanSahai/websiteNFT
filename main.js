@@ -15,8 +15,9 @@ function drawCircuitBoxesSequentially(elements) {
     const turnDotRadius = 10;
     const margin = 10;
 
-    // Set up a persistent path to store all paths drawn
+    // Persistent path and turning points
     let persistentPath = [];
+    let turningPoints = [];
     let currentPathIndex = 0;
     let currentSegment = 0;
     let startTime = null;
@@ -55,6 +56,11 @@ function drawCircuitBoxesSequentially(elements) {
         }
 
         context.stroke();
+
+        // Draw all previously stored turning dots
+        for (const point of turningPoints) {
+            drawTurnDot(point.x, point.y);
+        }
     }
 
     // Function to animate drawing the current path
@@ -65,7 +71,7 @@ function drawCircuitBoxesSequentially(elements) {
         const segmentDuration = duration / segmentCount;
 
         // Ensure current segment index is valid
-        if (currentSegment =< segmentCount) {
+        if (currentSegment < segmentCount) {
             const start = currentPath[currentSegment];
             const end = currentPath[(currentSegment + 1) % segmentCount];
 
@@ -79,14 +85,9 @@ function drawCircuitBoxesSequentially(elements) {
             // Add the current position to the persistent path
             persistentPath.push({ x: currentX, y: currentY });
 
-            // Clear only the drawn paths and redraw the persistent path
+            // Clear the canvas but retain the path and turning dots
             context.clearRect(0, 0, canvas.width, canvas.height);
             drawPersistentPath();
-
-            // Draw all previously drawn turning dots up to the current segment
-            for (let i = 0; i < currentSegment; i++) {
-                drawTurnDot(currentPath[i].x, currentPath[i].y);
-            }
 
             // Draw the moving circle at the current position
             drawMovingCircle(currentX, currentY);
@@ -94,6 +95,7 @@ function drawCircuitBoxesSequentially(elements) {
             // Draw the turning dot at the beginning of each segment
             if (progress >= 1) {
                 drawTurnDot(start.x, start.y);
+                turningPoints.push(start); // Store turning points persistently
 
                 // Move to the next segment
                 currentSegment += 1;
@@ -108,6 +110,7 @@ function drawCircuitBoxesSequentially(elements) {
 
             // Store the starting point for the next box
             persistentPath.push(currentPath[0]);
+            turningPoints.push(currentPath[0]);
 
             // Move to the next path
             currentPathIndex += 1;
