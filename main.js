@@ -156,12 +156,11 @@ function drawCircuitBoxesSequentially(elements) {
 
         // Draw vertical line to match the x-coordinate
         connectorPath.push({ x: lastPoint.x, y: nextStart.y - 35 });
-
+        drawPersistentPathConnector();
         // Draw horizontal line to match the y-coordinate
         connectorPath.push({ x: nextStart.x, y: nextStart.y - 35 });
-
+        drawPersistentPathConnector();
         connectorPath.push({ x: nextStart.x, y: nextStart.y });
-
         // Update the persistent path on the canvas with connector style
         drawPersistentPathConnector();
     }
