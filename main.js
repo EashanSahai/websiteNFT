@@ -70,7 +70,7 @@ function drawCircuitBoxesSequentially(elements) {
     }
     function drawPersistentPathConnector() {
         context.beginPath();
-        context.strokeStyle = "yellow";
+        context.strokeStyle = '#2f2f30';
         context.lineWidth = 5;
 
         // Draw all the paths stored in the persistent path
@@ -155,7 +155,8 @@ function drawCircuitBoxesSequentially(elements) {
     // Draw the transition to the next path starting point
     function drawTransitionToNextPath(nextStart) {
         const lastPoint = persistentPath[persistentPath.length - 1];
-        connectorPath.push({ x: lastPoint.x, y: nextStart.y - 35 });
+        connectorPath.push({ x: lastPoint.x - 35, y: nextStart.y});
+        connectorPath.push({ x: lastPoint.x - 35, y: nextStart.y - 35 });
         connectorPath.push({ x: nextStart.x, y: nextStart.y - 35 });
         connectorPath.push({ x: nextStart.x, y: nextStart.y });
         
