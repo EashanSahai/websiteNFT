@@ -73,8 +73,8 @@ function drawCircuitBoxesSequentially(elements) {
 
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
-            const start = persistentPath[i];
-            const end = persistentPath[i + 1];
+            const start = connectorPath[i];
+            const end = connectorPath[i + 1];
             context.moveTo(start.x, start.y);
             context.lineTo(end.x, end.y);
         }
@@ -155,12 +155,12 @@ function drawCircuitBoxesSequentially(elements) {
         const lastPoint = persistentPath[persistentPath.length - 1];
 
         // Draw vertical line to match the x-coordinate
-        persistentPath.push({ x: lastPoint.x, y: nextStart.y - 35 });
+        connectorPath.push({ x: lastPoint.x, y: nextStart.y - 35 });
 
         // Draw horizontal line to match the y-coordinate
-        persistentPath.push({ x: nextStart.x, y: nextStart.y - 35 });
+        connectorPath.push({ x: nextStart.x, y: nextStart.y - 35 });
 
-        persistentPath.push({ x: nextStart.x, y: nextStart.y });
+        connectorPath.push({ x: nextStart.x, y: nextStart.y });
 
         // Update the persistent path on the canvas with connector style
         drawPersistentPathConnector();
