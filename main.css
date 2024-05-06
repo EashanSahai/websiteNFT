@@ -48,7 +48,7 @@ body {
 /* Caption styles */
 #caption-text {
     font-style: italic;
-    font-size: 3em;
+    font-size: 2em;
     width: 800px;
     margin: 50px auto;
     opacity: 0;
