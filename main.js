@@ -71,7 +71,7 @@ function drawCircuitBoxesSequentially(elements) {
     function drawPersistentPathConnector() {
         context.beginPath();
         context.strokeStyle = '#2f2f30';
-        context.lineWidth = 5;
+        context.lineWidth = 10;
 
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < connectorPath.length - 1; i++) {
@@ -113,7 +113,6 @@ function drawCircuitBoxesSequentially(elements) {
             connectorPath.push({ x: currentX, y: currentY });
             // Clear the drawing area and redraw the persistent path
             context.clearRect(0, 0, canvas.width, canvas.height);
-            drawPersistentPathConnector();
             drawPersistentPath();
 
             // Draw the moving circle at the current position
