@@ -11,7 +11,7 @@ function drawCircuitBoxesSequentially(elements) {
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
-    const circleRadius = 28;
+    const circleRadius = 24;
     const turnDotRadius = 14;
     const margin = 10;
 
@@ -46,7 +46,7 @@ function drawCircuitBoxesSequentially(elements) {
     // Function to draw the persistent path and turning dots without delay
     function drawPersistentPath() {
         context.strokeStyle = "white";
-        context.lineWidth = 5;
+        context.lineWidth = 10;
         context.beginPath();
     
         // Draw all the paths stored in the persistent path
