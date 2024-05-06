@@ -11,8 +11,8 @@ function drawCircuitBoxesSequentially(elements) {
     document.body.appendChild(canvas);
 
     const context = canvas.getContext('2d');
-    const circleRadius = 12;
-    const turnDotRadius = 10;
+    const circleRadius = 18;
+    const turnDotRadius = 16;
     const margin = 10;
 
     // Persistent path and turning points
