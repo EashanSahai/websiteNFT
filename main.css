@@ -40,7 +40,7 @@ body {
     font-size: 3em;
     font-weight: bold;
     width: 300px;
-    margin: 5px 0;
+    margin: 5px auto;
     opacity: 0;
     transition: opacity 0.5s ease-in;
 }
@@ -50,7 +50,7 @@ body {
     font-style: italic;
     font-size: 1.5em;
     width: 300px;
-    margin: 5px 0;
+    margin: 5px auto;
     opacity: 0;
     transition: opacity 0.5s ease-in;
 }
