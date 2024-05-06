@@ -22,6 +22,7 @@ function drawCircuitBoxesSequentially(elements) {
     let currentSegment = 0;
     let startTime = null;
     const duration = 1000; // Duration per box drawing (1 second)
+    const durationConnection = 1000; // Duration per box drawing (1 second)
 
     // Calculate the ordered paths for each specified element
     const orderedPaths = elements.map(elementId => {
@@ -154,7 +155,6 @@ function drawCircuitBoxesSequentially(elements) {
             if (currentPathIndex < orderedPaths.length) {
                 // Draw a transition to the next starting point
                 drawTransitionToNextPath(orderedPaths[currentPathIndex][0]);
-                requestAnimationFrame(animateCircuit);
             }
         }
     }
@@ -164,12 +164,19 @@ function drawCircuitBoxesSequentially(elements) {
         const lastPoint = turningPoints[turningPoints.length - 2];
         connectorPath.push({ x: lastPoint.x, y: lastPoint.y});
         connectorPath.push({ x: lastPoint.x - 100, y: lastPoint.y});
+        drawPersistentPathConnector();
+        requestAnimationFrame(animateCircuit);
         connectorPath.push({ x: lastPoint.x - 100, y: nextStart.y - 35 });
+        drawPersistentPathConnector();
+        requestAnimationFrame(animateCircuit);
         connectorPath.push({ x: nextStart.x, y: nextStart.y - 35 });
+        drawPersistentPathConnector();
+        requestAnimationFrame(animateCircuit);
         connectorPath.push({ x: nextStart.x, y: nextStart.y });
+        drawPersistentPathConnector();
+        requestAnimationFrame(animateCircuit);
         
         // Update the persistent path on the canvas with connector style
-        drawPersistentPathConnector();
     }
 
     // Draw a turning dot with a black center
