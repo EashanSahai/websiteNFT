@@ -45,14 +45,16 @@ function drawCircuitBoxesSequentially(elements) {
 
     // Function to draw the persistent path and turning dots without delay
     function drawPersistentPath(lineType) {
-        if(lineType=='Connector'):
+        if(lineType=='Connector'){
             context.strokeStyle = "yellow";
             context.lineWidth = 5;
             context.beginPath();
-        else:
+        }
+        else {
             context.strokeStyle = "white";
             context.lineWidth = 10;
             context.beginPath();
+        }
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
             const start = persistentPath[i];
