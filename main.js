@@ -43,15 +43,18 @@ function drawCircuitBoxesSequentially(elements) {
     }).filter(Boolean);
 
     // Function to draw the persistent path and turning dots without delay
-    function drawPersistentPath(a) {
-        if(a === 'Connector'){
+    function drawPersistentPath(type = 'Box') {
+        context.beginPath();
+    
+        // Apply distinct styles for connector and box paths
+        if (type === 'Connector') {
             context.strokeStyle = "yellow";
             context.lineWidth = 5;
         } else {
             context.strokeStyle = "white";
             context.lineWidth = 10;
         }
-        context.beginPath();
+    
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
             const start = persistentPath[i];
@@ -62,7 +65,7 @@ function drawCircuitBoxesSequentially(elements) {
     
         context.stroke();
     
-        // Draw all previously stored turning dots immediately
+        // Draw all previously stored turning dots
         for (const point of turningPoints) {
             drawTurnDot(point.x, point.y);
         }
@@ -92,7 +95,7 @@ function drawCircuitBoxesSequentially(elements) {
     
             // Clear only the drawing area and redraw the persistent path
             context.clearRect(0, 0, canvas.width, canvas.height);
-            drawPersistentPath();
+            drawPersistentPath('Box');
     
             // Draw the moving circle at the current position
             drawMovingCircle(currentX, currentY);
