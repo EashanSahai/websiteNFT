@@ -68,7 +68,7 @@ function drawCircuitBoxesSequentially(elements) {
             drawTurnDot(point.x, point.y);
         }
     }
-    function drawPersistentPathConnector(draw=false) {
+    function drawPersistentPathConnector() {
         context.beginPath();
         context.strokeStyle = '#2f2f30';
         context.lineWidth = 10;
@@ -78,9 +78,7 @@ function drawCircuitBoxesSequentially(elements) {
             const start = connectorPath[i];
             const end = connectorPath[i + 1];
             context.moveTo(start.x, start.y);
-            if (draw == true) {
-                context.lineTo(end.x, end.y);
-            }
+            context.lineTo(end.x, end.y);
         }
 
         context.stroke();
@@ -162,7 +160,7 @@ function drawCircuitBoxesSequentially(elements) {
         connectorPath.push({ x: nextStart.x, y: nextStart.y });
         
         // Update the persistent path on the canvas with connector style
-        drawPersistentPathConnector(true);
+        drawPersistentPathConnector();
     }
 
     // Draw a turning dot with a black center
