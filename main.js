@@ -129,14 +129,12 @@ function drawCircuitBoxesSequentially(elements) {
 
     // Draw the transition to the next path start point
     function drawTransitionToNextPath(nextStart) {
-        const lastPoint = persistentPath[persistentPath.length - 1];
-        const lowerPoint = persistentPath[persistentPath.length - 2];
-        
+        const lastPoint = persistentPath[persistentPath.length - 1];        
         // Draw vertical line to match the x-coordinate
-        persistentPath.push({ x: lastPoint.x, y: 3 * (lowerPoint.y+nextStart.y)/4});
+        persistentPath.push({ x: lastPoint.x, y: 3 * (lastPoint.y-nextStart.y) + 5});
 
         // Draw horizontal line to match the y-coordinate
-        persistentPath.push({ x: nextStart.x, y: 3 * (lowerPoint.y+nextStart.y)/4});
+        persistentPath.push({ x: nextStart.x, y: (lastPoint.y-nextStart.y) + 5 });
 
         persistentPath.push({ x: nextStart.x, y: nextStart.y});
 
