@@ -39,7 +39,7 @@ body {
 #header-text {
     font-size: 3em;
     font-weight: bold;
-    width: 20%;
+    width: 300px;
     margin: 5px 0;
     opacity: 0;
     transition: opacity 0.5s ease-in;
@@ -49,7 +49,7 @@ body {
 #caption-text {
     font-style: italic;
     font-size: 1.5em;
-    width: 20%
+    width: 300px;
     margin: 5px 0;
     opacity: 0;
     transition: opacity 0.5s ease-in;
