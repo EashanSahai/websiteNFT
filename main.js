@@ -21,7 +21,7 @@ function drawCircuitBoxesSequentially(elements) {
     let currentPathIndex = 0;
     let currentSegment = 0;
     let startTime = null;
-    const duration = 2000; // Duration per box drawing (2 seconds)
+    const duration = 1000; // Duration per box drawing (2 seconds)
 
     // Calculate the ordered paths for each specified element
     const orderedPaths = elements.map(elementId => {
