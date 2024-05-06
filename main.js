@@ -43,7 +43,7 @@ function drawCircuitBoxesSequentially(elements) {
         return pathPoints;
     }).filter(Boolean);
 
-    // Function to draw a complete path up to a given point without overshooting
+    // Function to draw the persistent path without overshooting
     function drawPersistentPath() {
         context.strokeStyle = "white";
         context.lineWidth = 2;
@@ -64,68 +64,69 @@ function drawCircuitBoxesSequentially(elements) {
             drawTurnDot(point.x, point.y);
         }
     }
-
-    // Function to animate drawing the current path
+    
+    // Function to animate drawing the current path with high precision
     function animateCircuit(timestamp) {
         if (!startTime) startTime = timestamp;
         const currentPath = orderedPaths[currentPathIndex];
         const segmentCount = currentPath.length;
         const segmentDuration = duration / segmentCount;
-
-        // Ensure current segment index is valid
+    
+        // Ensure the current segment index is valid
         if (currentSegment < segmentCount) {
             const start = currentPath[currentSegment];
             const end = currentPath[(currentSegment + 1) % segmentCount];
-
-            // Determine progress within the current segment
-            const progress = (timestamp - startTime) / segmentDuration;
-
-            // Calculate the current position along the path using linear interpolation
+    
+            // Calculate progress using a high-precision float division
+            const progress = Math.min((timestamp - startTime) / segmentDuration, 1);
+    
+            // Interpolate the current position along the path accurately
             const currentX = start.x + progress * (end.x - start.x);
             const currentY = start.y + progress * (end.y - start.y);
-
-            // Add the current position to the persistent path
+    
+            // Update the persistent path
             persistentPath.push({ x: currentX, y: currentY });
-
-            // Clear the canvas but retain the path and turning dots
+    
+            // Clear only the drawing area and redraw the persistent path
             context.clearRect(0, 0, canvas.width, canvas.height);
             drawPersistentPath();
-
+    
             // Draw the moving circle at the current position
             drawMovingCircle(currentX, currentY);
-
+    
             // Draw the turning dot at the beginning of each segment
             if (progress >= 1) {
                 drawTurnDot(start.x, start.y);
-                turningPoints.push(start); // Store turning points persistently
-
+                turningPoints.push(start);
+    
                 // Move to the next segment
                 currentSegment += 1;
                 startTime = timestamp;
             }
-
+    
             // Continue animation
             requestAnimationFrame(animateCircuit);
         } else {
             // Reveal the current element after its box is drawn
             revealElement(elements[currentPathIndex]);
-
+    
             // Store the starting point for the next box
             persistentPath.push(currentPath[0]);
             turningPoints.push(currentPath[0]);
-
+    
             // Move to the next path
             currentPathIndex += 1;
             currentSegment = 0;
             startTime = null;
-
+    
             if (currentPathIndex < orderedPaths.length) {
-                // Draw a transition to the next starting point using straight lines
+                // Draw a transition to the next starting point
                 drawTransitionToNextPath(orderedPaths[currentPathIndex][0]);
                 requestAnimationFrame(animateCircuit);
             }
         }
     }
+
 
     // Draw the transition to the next path start point
     function drawTransitionToNextPath(nextStart) {
