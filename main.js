@@ -43,7 +43,7 @@ function drawCircuitBoxesSequentially(elements) {
         return pathPoints;
     }).filter(Boolean);
 
-    // Function to draw the persistent path without overshooting
+    // Function to draw the persistent path and turning dots without delay
     function drawPersistentPath() {
         context.strokeStyle = "white";
         context.lineWidth = 2;
@@ -59,13 +59,13 @@ function drawCircuitBoxesSequentially(elements) {
     
         context.stroke();
     
-        // Draw all previously stored turning dots
+        // Draw all previously stored turning dots immediately
         for (const point of turningPoints) {
             drawTurnDot(point.x, point.y);
         }
     }
     
-    // Function to animate drawing the current path with high precision
+    // Function to animate drawing the current path and turning dots
     function animateCircuit(timestamp) {
         if (!startTime) startTime = timestamp;
         const currentPath = orderedPaths[currentPathIndex];
@@ -73,11 +73,11 @@ function drawCircuitBoxesSequentially(elements) {
         const segmentDuration = duration / segmentCount;
     
         // Ensure the current segment index is valid
-        if (currentSegment <= segmentCount) {
+        if (currentSegment < segmentCount) {
             const start = currentPath[currentSegment];
             const end = currentPath[(currentSegment + 1) % segmentCount];
     
-            // Calculate progress using a high-precision float division
+            // Calculate progress using floating-point division
             const progress = Math.min((timestamp - startTime) / segmentDuration, 1);
     
             // Interpolate the current position along the path accurately
@@ -94,7 +94,7 @@ function drawCircuitBoxesSequentially(elements) {
             // Draw the moving circle at the current position
             drawMovingCircle(currentX, currentY);
     
-            // Draw the turning dot at the beginning of each segment
+            // Draw the turning dot immediately after the segment is fully drawn
             if (progress >= 1) {
                 drawTurnDot(start.x, start.y);
                 turningPoints.push(start);
