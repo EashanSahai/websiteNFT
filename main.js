@@ -65,7 +65,7 @@ function drawCircuitBoxesSequentially(elements) {
         const segmentDuration = duration / segmentCount;
 
         // Ensure current segment index is valid
-        if (currentSegment < segmentCount) {
+        if (currentSegment =< segmentCount) {
             const start = currentPath[currentSegment];
             const end = currentPath[(currentSegment + 1) % segmentCount];
 
