@@ -49,7 +49,7 @@ body {
 #caption-text {
     font-style: italic;
     font-size: 2em;
-    width: 750px;
+    width: 650px;
     margin: 50px auto;
     opacity: 0;
     transition: opacity 0.5s ease-in;
