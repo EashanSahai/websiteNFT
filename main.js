@@ -140,7 +140,6 @@ function drawCircuitBoxesSequentially(elements) {
     
             if (currentPathIndex < orderedPaths.length) {
                 // Draw a transition to the next starting point
-                drawPersistentPathConnector();
                 drawTransitionToNextPath(orderedPaths[currentPathIndex][0]);
                 requestAnimationFrame(animateCircuit);
             }
@@ -150,7 +149,7 @@ function drawCircuitBoxesSequentially(elements) {
 
     // Draw the transition to the next path start point
     function drawTransitionToNextPath(nextStart) {
-        const lastPoint = persistentPath[persistentPath.length - 1];        
+        const lastPoint = persistentPath[persistentPath.length - 1];
         // Draw vertical line to match the x-coordinate
         persistenPath.push({ x: lastPoint.x, y: nextStart.y - 35});
 
@@ -160,7 +159,7 @@ function drawCircuitBoxesSequentially(elements) {
         persistentPath.push({ x: nextStart.x, y: nextStart.y});
 
         // Update the persistent path on the canvas
-        drawPersistentPath();
+        drawPersistentPathConnector();
     }
 
     // Draw a turning dot with a black center
