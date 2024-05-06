@@ -84,20 +84,18 @@ function drawCircuitBoxesSequentially(elements) {
             const currentY = start.y + progress * (end.y - start.y);
     
             // Update the persistent path
-            turningPoints.push(start);
             persistentPath.push({ x: currentX, y: currentY });
     
             // Clear only the drawing area and redraw the persistent path
             context.clearRect(0, 0, canvas.width, canvas.height);
             drawPersistentPath();
-    
+            drawTurnDot(start.x, start.y);
             // Draw the moving circle at the current position
             drawMovingCircle(currentX, currentY);
     
             // Draw the turning dot immediately after the segment is fully drawn
             if (progress >= 1) {
-                drawTurnDot(start.x, start.y);
-    
+                turningPoints.push(start);
                 // Move to the next segment
                 currentSegment += 1;
                 startTime = timestamp;
