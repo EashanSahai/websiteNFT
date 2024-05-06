@@ -52,7 +52,7 @@ function drawCircuitBoxesSequentially(elements) {
         // Draw all the paths stored in the persistent path
         for (let i = 0; i < persistentPath.length - 1; i++) {
             const start = persistentPath[i];
-            const end = persistentPath[i + 5];
+            const end = persistentPath[i + 1];
             context.moveTo(start.x, start.y);
             context.lineTo(end.x, end.y);
         }
@@ -64,7 +64,27 @@ function drawCircuitBoxesSequentially(elements) {
             drawTurnDot(point.x, point.y);
         }
     }
+    // For connector
+    function drawPersistentPathConnector() {
+        context.strokeStyle = "yellow";
+        context.lineWidth = 1;
+        context.beginPath();
     
+        // Draw all the paths stored in the persistent path
+        for (let i = 0; i < persistentPath.length - 1; i++) {
+            const start = persistentPath[i];
+            const end = persistentPath[i + 1];
+            context.moveTo(start.x, start.y);
+            context.lineTo(end.x, end.y);
+        }
+    
+        context.stroke();
+    
+        // Draw all previously stored turning dots immediately
+        for (const point of turningPoints) {
+            drawTurnDot(point.x, point.y);
+        }
+    }
     // Function to animate drawing the current path and turning dots
     function animateCircuit(timestamp) {
         if (!startTime) startTime = timestamp;
@@ -75,7 +95,7 @@ function drawCircuitBoxesSequentially(elements) {
         // Ensure the current segment index is valid
         if (currentSegment < segmentCount) {
             const start = currentPath[currentSegment];
-            const end = currentPath[(currentSegment + 5) % segmentCount];
+            const end = currentPath[(currentSegment + 1) % segmentCount];
     
             // Calculate progress using floating-point division
             const progress = Math.min((timestamp - startTime) / segmentDuration, 1);
@@ -120,6 +140,7 @@ function drawCircuitBoxesSequentially(elements) {
     
             if (currentPathIndex < orderedPaths.length) {
                 // Draw a transition to the next starting point
+                drawPersistentPathConnector();
                 drawTransitionToNextPath(orderedPaths[currentPathIndex][0]);
                 requestAnimationFrame(animateCircuit);
             }
@@ -131,7 +152,7 @@ function drawCircuitBoxesSequentially(elements) {
     function drawTransitionToNextPath(nextStart) {
         const lastPoint = persistentPath[persistentPath.length - 1];        
         // Draw vertical line to match the x-coordinate
-        persistentPath.push({ x: lastPoint.x, y: nextStart.y - 35});
+        persistenPath.push({ x: lastPoint.x, y: nextStart.y - 35});
 
         // Draw horizontal line to match the y-coordinate
         persistentPath.push({ x: nextStart.x, y: nextStart.y - 35});
