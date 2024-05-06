@@ -99,14 +99,12 @@ function drawCircuitBoxesSequentially(elements) {
 
             // Draw the moving circle at the current position
             drawMovingCircle(currentX, currentY);
-
-            // Store and draw the turning dot only after the segment is fully drawn
-            if (progress >= 1) {
-                if (!turningPoints.some(point => point.x === start.x && point.y === start.y)) {
+            if (!turningPoints.some(point => point.x === start.x && point.y === start.y)) {
                     drawTurnDot(start.x, start.y);
                     turningPoints.push(start);
-                }
-
+            }
+            // Store and draw the turning dot only after the segment is fully drawn
+            if (progress >= 1) {
                 // Move to the next segment
                 currentSegment += 1;
                 startTime = timestamp;
