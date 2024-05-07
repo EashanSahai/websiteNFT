@@ -71,7 +71,7 @@ function drawCircuitBoxesSequentially(elements) {
     }
     function drawPersistentPathConnector() {
         context.beginPath();
-        context.strokeStyle = '#2f2f30';
+        context.strokeStyle = 'yellow';//'#2f2f30';
         context.lineWidth = 10;
 
         // Draw all the paths stored in the persistent path
